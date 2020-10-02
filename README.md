@@ -1,2 +1,2 @@
 # stripboeken
-Scripts om lijsten te printen van verschillende stripboekenreeksen
+Scripts om lijsten te printen van verschillende verzamelingen, zoals stripboekenreeksen 
