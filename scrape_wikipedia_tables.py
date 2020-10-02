@@ -7,7 +7,7 @@ authors: panford, wassname, muzzled, Yossi, apie (convert to class)
 license: MIT
 """
 
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup  # type: ignore
 import requests
 import sys
 
