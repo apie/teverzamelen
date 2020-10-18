@@ -1,0 +1,7 @@
+todo.txt
+troep/
+__pycache__/
+*.sqlite
+venv/
+backup/
+config.py
