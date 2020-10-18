@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.7
+#!/usr/bin/env python3
 # By Apie 2020-10-02
 # License: MIT
 from itertools import filterfalse
