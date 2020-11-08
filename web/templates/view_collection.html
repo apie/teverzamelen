@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block body %}
+<a href="/">Terug</a>
+<form method="post" action="/api/item">
+    <input type="text" placeholder="Naam" required>
+    <input type="submit" value="Toevoegen"> <!-- TODO -->
+</form>
+<table id="collection_table">
+    <thead>
+    <tr>
+<!--        <th>Sequence<th> flipt de layout todo -->
+        <th>Name</th>
+        <th>Owned</th>
+        <th>Want</th>
+        <th>Read</th>
+    </tr>
+    <!--        <th>Rating TODO</th>-->
+    </thead>
+</table>
+<script>
+   $(document).ready(function() {
+    $('#collection_table').DataTable( {
+        responsive: true,
+        searching: false,
+        paging: false,
+        rowId: 'id',
+        language: {
+            url: "//cdn.datatables.net/plug-ins/1.10.21/i18n/Dutch.json"
+        },
+        ajax: {
+            url: '/api/item?q={"filters":[{"name":"collection_id","op":"eq","val":"'+{{collection_id}}+'"}]}',
+            dataSrc: 'objects',
+        },
+        columns: [
+<!--            { "data": "sequence" },-->
+            { "data": "name" },
+            { "data": "owned" },
+            { "data": "want" },
+            { "data": "read" },
+        ]
+    } );
+} );
+</script>
+{% endblock body %}

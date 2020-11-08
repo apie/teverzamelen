@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>
+    Welkom op Teverzamelen.nl!
+</h1>
+<p>
+    {% if current_user.email %}
+        <h2>Jouw lijstjes</h2>
+        <form method="post" action="/api/collection">
+            <input type="text" placeholder="Lijstje" required>
+            <input type="submit" value="Nieuw"> <!-- TODO -->
+        </form>
+        <table id="my_collections" class="hover " >
+            <thead>
+                <tr>
+                    <th>Naam<th>
+                </tr>
+            </thead>
+        </table>
+        <a href="/public">Gedeelde lijstjes bekijken</a>.
+        <!-- gedeelde lijstjes ook op frontpage? todo -->
+    {% else %}
+        <a href="/login">Log direct in</a> om een eigen lijstje te maken of bekijk de <a href="/public">gedeelde lijstjes</a>!
+    {% endif %}
+</p>
+<script>
+   $(document).ready(function() {
+    $('#my_collections').DataTable( {
+        autoWidth: false,
+        responsive: true,
+        paging: false,
+        searching: false,
+        rowId: 'id',
+        language: {
+            url: "//cdn.datatables.net/plug-ins/1.10.21/i18n/Dutch.json"
+        },
+        ajax: {
+            url: '/api/collection',
+            dataSrc: 'objects',
+        },
+        columns: [
+            { "data": "name", render: function(data, type, full, meta) {
+                 return `<a href="collection/${full.id}">${data}</a>`
+            }},
+        ],
+    } );
+} );
+</script>
+{% endblock body %}

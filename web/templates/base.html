@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    {% block styles %}
+        <link rel="stylesheet" href="/static/base.css" />
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.22/r-2.2.6/datatables.min.css"/>
+    {% endblock styles %}
+    {% block javascript %}
+        <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.22/r-2.2.6/datatables.min.js"></script>
+    {% endblock javascript %}
+</head>
+<body>
+<div>
+    {% if current_user.email %}
+    Ingelogd als {{current_user.email}}.
+    <a href="/logout">uitloggen</a>
+    {% else %}
+    Niet ingelogd.
+    <a href="/login">inloggen</a>
+    {% endif %}
+</div>
+{% block body %}
+{% endblock body %}
+</body>
+</html>

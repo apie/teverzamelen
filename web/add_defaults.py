@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 # Add admin user and default collections
 import flask_sqlalchemy
-from app import Collection, Item, User, Role, app
+from web.app import Collection, Item, User, Role, app
 from sqlalchemy import create_engine
 from flask_security import SQLAlchemyUserDatastore
-from sqlite3 import IntegrityError
 import csv
 from glob import glob
 from os.path import basename
-from config import ADMIN_PASSWORD
-engine = create_engine('sqlite:///app.db', echo = True)
+from web.config import ADMIN_PASSWORD
+engine = create_engine('sqlite:///app.sqlite', echo = True)
  
 db = flask_sqlalchemy.SQLAlchemy(app)
 db.create_all()
