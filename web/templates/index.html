@@ -8,42 +8,30 @@
         <h2>Jouw lijstjes</h2>
         <form method="post" action="/api/collection">
             <input type="text" placeholder="Lijstje" required>
-            <input type="submit" value="Nieuw"> <!-- TODO -->
+            <input type="submit" value="Nieuw"> <!-- TODO via htmx -->
         </form>
         <table id="my_collections" class="hover " >
             <thead>
                 <tr>
                     <th>Naam<th>
+                    <th>Gedeeld<th>
                 </tr>
             </thead>
+            <tbody>
+            {% for collection in collections %}
+                <tr>
+                    <td><a href="/collection/{{collection.id}}">{{ collection.name }}</a></td>
+                    <td>{{'Ja' if collection.public else 'Nee'}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
         </table>
-        <a href="/public">Gedeelde lijstjes bekijken</a>.
-        <!-- gedeelde lijstjes ook op frontpage? todo -->
+        <p>
+            <a href="/public">Gedeelde lijstjes bekijken</a>.
+            <!-- gedeelde lijstjes ook op frontpage? todo -->
+        </p>
     {% else %}
         <a href="/login">Log direct in</a> om een eigen lijstje te maken of bekijk de <a href="/public">gedeelde lijstjes</a>!
     {% endif %}
 </p>
-<script>
-   $(document).ready(function() {
-    $('#my_collections').DataTable( {
-        autoWidth: false,
-        responsive: true,
-        paging: false,
-        searching: false,
-        rowId: 'id',
-        language: {
-            url: "//cdn.datatables.net/plug-ins/1.10.21/i18n/Dutch.json"
-        },
-        ajax: {
-            url: '/api/collection',
-            dataSrc: 'objects',
-        },
-        columns: [
-            { "data": "name", render: function(data, type, full, meta) {
-                 return `<a href="collection/${full.id}">${data}</a>`
-            }},
-        ],
-    } );
-} );
-</script>
 {% endblock body %}

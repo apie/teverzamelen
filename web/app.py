@@ -8,7 +8,6 @@ from flask_mail import Mail
 from flask_security import SQLAlchemyUserDatastore
 from flask_security.models import fsqla_v2 as fsqla
 from flask_security import Security
-from flask_restless import ProcessingException, APIManager
 from flask_login import current_user
 from flask_security import auth_required
 
@@ -87,131 +86,7 @@ class User(db.Model, fsqla.FsUserMixin):
 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 db.create_all()
-
-
 security = Security(app, user_datastore)
-
-
-########################### API move to separate file #########################
-@security.unauthn_handler
-def r(*args, headers):
-    if 'api/' in request.url:
-        # Needed for auth_func because it needs to raise something. Return values dont matter.
-        raise ProcessingException(description='Not Authorized', code=401)
-    # Otherwise, normal behavior: redirect to login page
-    return redirect(url_for('security.login'))
-
-
-def deny(*args, **kwargs):
-    raise ProcessingException(description='Forbidden', code=403)
-
-
-manager = APIManager(app, flask_sqlalchemy_db=db, preprocessors=(dict(
-    PUT_MANY=[deny],
-    DELETE_MANY=[deny],
-)))
-
-
-@auth_required()
-def auth_func_single_collection(instance_id=None, **kwargs):
-    if Collection.query.filter_by(user=current_user, id=instance_id).first() is None:
-        raise ProcessingException(description='Not Authorized', code=401)
-
-
-@auth_required()
-def auth_func_many_collection(search_params=None, **kwargs):
-    if 'filters' not in search_params:
-        search_params['filters'] = []
-    # Always filter on current logged in user
-    search_params['filters'].append(
-        dict(name='user', op='eq', val=current_user)
-    )
-
-
-def auth_func_post_collection(data, **kwargs):
-    if data['user_id'] != current_user.id:
-        # Can only post for the current user
-        raise ProcessingException(description='Not Authorized', code=401)
-
-
-manager.create_api(
-    Collection,
-    methods=['GET', 'POST', 'PUT', 'DELETE'],
-    exclude_columns=['user', 'items'],
-    results_per_page=-1,
-    preprocessors=(dict(
-        GET_SINGLE=[auth_func_single_collection],
-        GET_MANY=[auth_func_many_collection],
-        POST=[auth_func_post_collection],
-        PUT_SINGLE=[auth_func_single_collection],
-        DELETE_SINGLE=[auth_func_single_collection],
-    )),
-)
-
-
-@auth_required()
-def auth_func_single_item(instance_id=None, **kwargs):
-    item = Item.query.filter_by(id=instance_id).first()  # No idea how to do this in one go in SQLAlchemy
-    if Collection.query.filter_by(user=current_user, id=item.collection_id).first() is None:
-        raise ProcessingException(description='Not Authorized', code=401)
-
-
-@auth_required()
-def auth_func_many_item(search_params=None, **kwargs):
-    if 'filters' not in search_params:
-        search_params['filters'] = []
-    # This works but it could be better..
-    for col in Collection.query.filter(Collection.user != current_user):
-        # Exclude collections of other users.
-        search_params['filters'].append(
-            dict(name='collection', op='neq', val=col)
-        )
-
-
-def auth_func_post_item(data, **kwargs):
-    if Collection.query.filter_by(user=current_user, id=data['collection_id']).first() is None:
-        # Can only post for collections owned by the current user
-        raise ProcessingException(description='Not Authorized', code=401)
-
-
-manager.create_api(
-    Item,
-    methods=['GET', 'POST', 'PUT', 'DELETE'],
-    results_per_page=-1,
-    exclude_columns=['collection', ],
-    preprocessors=(dict(
-        GET_SINGLE=[auth_func_single_item],
-        GET_MANY=[auth_func_many_item],
-        POST=[auth_func_post_item],
-        PUT_SINGLE=[auth_func_single_item],
-        DELETE_SINGLE=[auth_func_single_item],
-    )),
-)
-
-
-def auth_func_many_public(search_params=None, **kwargs):
-    if 'filters' not in search_params:
-        search_params['filters'] = []
-    # Always filter on public
-    search_params['filters'].append(
-        dict(name='public', op='eq', val=True)
-    )
-
-
-manager.create_api(
-    Collection,
-    methods=['GET'],
-    results_per_page=-1,
-    exclude_columns=['user', 'items'],
-    preprocessors=(dict(
-        GET_SINGLE=[deny],
-        GET_MANY=[auth_func_many_public],
-    )),
-    url_prefix='/public/api'
-)
-
-
-########################### API move to separate file #########################
 
 
 # TODO
@@ -228,18 +103,24 @@ def send_static(path):
 
 @app.route('/')
 def index():
-    return render_template('index.html', title='Teverzamelen.nl')
+    collections = ()
+    if getattr(current_user, 'email', None):
+        collections = Collection.query.filter_by(user=current_user)
+    return render_template('index.html', title='Teverzamelen.nl', collections=collections)
 
 
 @app.route('/public')
 def public():
-    return render_template('public_index.html', title='Gedeelde lijstjes')
+    collections = Collection.query.filter_by(public=True)
+    return render_template('public_index.html', title='Gedeelde lijstjes', collections=collections)
 
 
 @app.route('/collection/<id>')
 @auth_required()
 def view_collection(id):
-    return render_template('view_collection.html', title='Bewerk lijstje', collection_id=id)
+    collection = Collection.query.filter_by(user=current_user, id=id).first()
+    items = Item.query.filter_by(collection=collection)
+    return render_template('view_collection.html', title='Bewerk lijstje', items=items)
 
 
 @app.route('/copy_collection/<id>')

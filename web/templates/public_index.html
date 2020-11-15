@@ -1,33 +1,23 @@
 {% extends "base.html" %}
 {% block body %}
 <a href="/">Terug</a>
+<h1>{{ title }}</h1>
 <table id="public_table">
     <thead>
-    <tr>
-        <th>Verzameling<th>
-        <th>ID Gebruiker</th>
-    </tr>
+        <tr>
+            <th>Verzameling</th>
+            <th>Gebruiker</th>
+            {% if current_user.email %}<th>Kopiëren</th>{% endif %}
+        </tr>
     </thead>
+    <tbody>
+    {% for collection in collections %}
+        <tr>
+            <td>{{ collection.name }}</td>
+            <td>{{ collection.user.email }}</td>
+            {% if current_user.email %}<td><a href="#">Kopieer lijstje</a></td>{% endif %}
+        </tr>
+    {% endfor %}
+    </tbody>
 </table>
-<script>
-   $(document).ready(function() {
-    $('#public_table').DataTable( {
-        autoWidth: false,
-        searching: false,
-        responsive: true,
-        paging: false,
-        language: {
-            url: "//cdn.datatables.net/plug-ins/1.10.21/i18n/Dutch.json"
-        },
-        ajax: {
-            url: '/public/api/collection',
-            dataSrc: 'objects',
-        },
-        columns: [
-            { "data": "name" },
-            { "data": "user_id" },
-        ]
-    } );
-} );
-</script>
 {% endblock body %}

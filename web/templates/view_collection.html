@@ -9,36 +9,22 @@
     <thead>
     <tr>
 <!--        <th>Sequence<th> flipt de layout todo -->
-        <th>Name</th>
-        <th>Owned</th>
-        <th>Want</th>
-        <th>Read</th>
+        <th>Naam</th>
+        <th>Heb ik</th>
+        <th>Wil ik</th>
+        <th>Gelezen</th>
+        <!--        <th>Rating TODO</th>-->
+        <!-- uitgavejaar todo -->
     </tr>
-    <!--        <th>Rating TODO</th>-->
     </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{item.name}}</td>
+            <td>{{'Ja' if item.owned else 'Nee'}}</td>
+            <td>{{'Ja' if item.want else 'Nee'}}</td>
+            <td>{{'Ja' if item.read else 'Nee'}}</td>
+        </tr>
+        {% endfor %}
 </table>
-<script>
-   $(document).ready(function() {
-    $('#collection_table').DataTable( {
-        responsive: true,
-        searching: false,
-        paging: false,
-        rowId: 'id',
-        language: {
-            url: "//cdn.datatables.net/plug-ins/1.10.21/i18n/Dutch.json"
-        },
-        ajax: {
-            url: '/api/item?q={"filters":[{"name":"collection_id","op":"eq","val":"'+{{collection_id}}+'"}]}',
-            dataSrc: 'objects',
-        },
-        columns: [
-<!--            { "data": "sequence" },-->
-            { "data": "name" },
-            { "data": "owned" },
-            { "data": "want" },
-            { "data": "read" },
-        ]
-    } );
-} );
-</script>
 {% endblock body %}
