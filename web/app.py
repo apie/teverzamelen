@@ -3,7 +3,7 @@ import os
 
 import flask
 import flask_sqlalchemy
-from flask import redirect, url_for, request, send_from_directory, render_template
+from flask import redirect, url_for, request, send_from_directory, render_template, render_template_string
 from flask_mail import Mail
 from flask_security import SQLAlchemyUserDatastore
 from flask_security.models import fsqla_v2 as fsqla
@@ -89,7 +89,7 @@ db.create_all()
 security = Security(app, user_datastore)
 
 
-# TODO
+# TODO favicon
 @app.route('/favicon.ico')
 def favicon():
     return b''
@@ -120,14 +120,50 @@ def public():
 def view_collection(id):
     collection = Collection.query.filter_by(user=current_user, id=id).first()
     items = Item.query.filter_by(collection=collection)
-    return render_template('view_collection.html', title='Bewerk lijstje', items=items)
+    return render_template('view_collection.html', title='Bewerk lijstje', items=items, collection_id=collection.id)
 
 
 @app.route('/copy_collection/<id>')
 @auth_required()
 def copy_collection(id):
-    # Copy public collection to your collections
-    return f'TODO COPY {id} to {current_user.email}' #TODO
+    # TODO Copy public collection to your collections
+    return f'TODO COPY {id} to {current_user.email}'
+
+
+@app.route('/item/new', methods=['POST'])
+@auth_required()
+def new_item():
+    collection_id = request.form['collection_id']
+    name = request.form['name']
+    collection = Collection.query.filter_by(user=current_user, id=collection_id).first()
+    item = Item(name=name, collection=collection)
+    # import pdb;pdb.set_trace()
+    db.session.add(item)
+    db.session.commit()
+    print(item)
+    # TODO use a template snippet for this and include it in two places
+    return render_template_string('''
+            <tr>
+                <td>{{item.name}}</td>
+                <td>{{'Ja' if item.owned else 'Nee'}}</td>
+                <td>{{'Ja' if item.want else 'Nee'}}</td>
+                <td>{{'Ja' if item.read else 'Nee'}}</td>
+                <td><button class="btn btn-danger" hx-delete="/item/{{item.id}}">Delete</button></td>
+            </tr>
+    ''', item=item)
+
+@app.route('/item/<id>', methods=['PUT', 'DELETE'])
+@auth_required()
+def change_item(id):
+    item = Item.query.filter_by(id=id).first()
+    if item.collection.user != current_user:
+        return 'Unauthorized'
+    if request.method == 'DELETE':
+        db.session.delete(item)
+        db.session.commit()
+        return ''
+
+    #TODO PUT: change item
 
 
 if __name__ == '__main__':

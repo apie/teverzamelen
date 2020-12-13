@@ -6,3 +6,5 @@ venv/
 backup/
 config.py
 *.db
+.vscode/
+*.code-workspace

@@ -1,30 +1,35 @@
 {% extends "base.html" %}
 {% block body %}
 <a href="/">Terug</a>
-<form method="post" action="/api/item">
-    <input type="text" placeholder="Naam" required>
-    <input type="submit" value="Toevoegen"> <!-- TODO -->
+
+<form hx-post="/item/new" hx-target="#collection_table_body" hx-swap="afterbegin">
+    <input type="hidden" name="collection_id" value="{{collection_id}}">
+    <input type="text" name="name" placeholder="Naam" required>
+    <input type="submit" value="Toevoegen">
 </form>
+<span class="htmx-indicator">EVEN GEDULD AUB</span>
 <table id="collection_table">
     <thead>
     <tr>
-<!--        <th>Sequence<th> flipt de layout todo -->
+    <!-- TODO sequence flipt de layout -->
+<!--        <th>Sequence<th> -->
         <th>Naam</th>
         <th>Heb ik</th>
         <th>Wil ik</th>
         <th>Gelezen</th>
-        <!--        <th>Rating TODO</th>-->
-        <!-- uitgavejaar todo -->
+        <!-- TODO rating column Rating -->
+        <!-- TODO uitgavejaar -->
     </tr>
     </thead>
-    <tbody>
+    <tbody id="collection_table_body" hx-confirm="Weet je het zeker?" hx-target="closest tr" hx-swap="outerHTML swap:1s">
         {% for item in items %}
-        <tr>
-            <td>{{item.name}}</td>
-            <td>{{'Ja' if item.owned else 'Nee'}}</td>
-            <td>{{'Ja' if item.want else 'Nee'}}</td>
-            <td>{{'Ja' if item.read else 'Nee'}}</td>
-        </tr>
+            <tr>
+                <td>{{item.name}}</td>
+                <td>{{'Ja' if item.owned else 'Nee'}}</td>
+                <td>{{'Ja' if item.want else 'Nee'}}</td>
+                <td>{{'Ja' if item.read else 'Nee'}}</td>
+                <td><button class="btn btn-danger" hx-delete="/item/{{item.id}}">Delete</button></td>
+            </tr>
         {% endfor %}
 </table>
 {% endblock body %}

@@ -15,11 +15,11 @@
 <body>
 <div>
     {% if current_user.email %}
-    Ingelogd als {{current_user.email}}.
-    <a href="/logout">uitloggen</a>
+        Ingelogd als {{current_user.email}}.
+        <a href="/logout">uitloggen</a>
     {% else %}
-    Niet ingelogd.
-    <a href="/login">inloggen</a>
+        Niet ingelogd.
+        <a href="/login">inloggen</a>
     {% endif %}
 </div>
 {% block body %}
