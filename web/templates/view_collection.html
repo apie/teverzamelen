@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 {% block body %}
 <a href="/">Terug</a>
+<h2>Bewerk lijstje "{{collection.name}}"</h2>
+<!-- TODO geen swap maar gewoon redirect doen -->
+<button class="btn btn-danger" hx-delete="/collection/{{collection.id}}" hx-confirm="Weet je het zeker?" hx-target="body" hx-swap="swap:1s">Verwijder hele lijst</button>
 
-<!-- TODO remove collection -->
 <form hx-post="/item/new" hx-target="#collection_table_body" hx-swap="afterbegin">
-    <input type="hidden" name="collection_id" value="{{collection_id}}">
+    <label for="name">Nieuw item</label>
+    <input type="hidden" name="collection_id" value="{{collection.id}}">
     <input type="text" name="name" placeholder="Naam" required>
     <input type="submit" value="Toevoegen">
 </form>
@@ -20,7 +23,6 @@
         <th>Gelezen</th>
         <!-- TODO rating column Rating -->
         <!-- TODO uitgavejaar -->
-        <!-- TODO delen -->
     </tr>
     </thead>
     <tbody id="collection_table_body" >

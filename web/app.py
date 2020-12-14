@@ -3,7 +3,7 @@ import os
 
 import flask
 import flask_sqlalchemy
-from flask import redirect, url_for, request, send_from_directory, render_template, render_template_string
+from flask import redirect, url_for, request, send_from_directory, render_template, render_template_string, Response
 from flask_mail import Mail
 from flask_security import SQLAlchemyUserDatastore
 from flask_security.models import fsqla_v2 as fsqla
@@ -114,13 +114,41 @@ def public():
     collections = Collection.query.filter_by(public=True)
     return render_template('public_index.html', title='Gedeelde lijstjes', collections=collections)
 
+@app.route('/public/collection/<id>')
+def view_public_collection(id):
+    collection = Collection.query.filter_by(public=True, id=id).first_or_404()
+    items = Item.query.filter_by(collection=collection)
+    # TODO speciaal template gebruiken
+    return render_template('view_collection.html', title='Bekijk gedeeld lijstje', items=items, collection=collection)
 
-@app.route('/collection/<id>')
+def delete_collection(collection):
+    Item.query.filter_by(collection=collection).delete()
+    Collection.query.filter_by(id=collection.id).delete()
+    db.session.commit()
+    return '<a href="/">back</a>'
+
+def patch_collection(collection):
+    field = request.environ['HTTP_HX_TRIGGER_NAME']
+    val = getattr(collection, field)
+    if isinstance(val, bool):
+        newval = not val
+        retval = 'Ja' if newval else 'Nee'
+    else:
+        raise Exception('Not implemented')
+    Collection.query.filter_by(id=collection.id).update({field: newval})
+    db.session.commit()
+    return retval
+
+@app.route('/collection/<id>', methods=['GET', 'DELETE', 'PATCH'])
 @auth_required()
 def view_collection(id):
-    collection = Collection.query.filter_by(user=current_user, id=id).first()
+    collection = Collection.query.filter_by(user=current_user, id=id).first_or_404()
+    if request.method == 'DELETE':
+        return delete_collection(collection)
+    elif request.method == 'PATCH':
+        return patch_collection(collection)
     items = Item.query.filter_by(collection=collection)
-    return render_template('view_collection.html', title='Bewerk lijstje', items=items, collection_id=collection.id)
+    return render_template('view_collection.html', title='Bewerk lijstje', items=items, collection=collection)
 
 
 @app.route('/copy_collection/<id>', methods=['POST'])

@@ -5,7 +5,6 @@
 <table id="public_table">
     <thead>
         <tr>
-            <!-- TODO doorklikken naar details van lijstje -->
             <th>Verzameling</th>
             <th>Gebruiker</th>
             {% if current_user.email %}<th>Kopiëren</th>{% endif %}
@@ -14,7 +13,7 @@
     <tbody>
     {% for collection in collections %}
         <tr>
-            <td>{{ collection.name }} ({{ collection.items.count() }})</td>
+            <td><a href="/public/collection/{{collection.id}}">{{ collection.name }}</a> ({{ collection.items.count() }})</td>
             <td>{{ collection.user.email }}</td>
             <!-- TODO beter om gewoon redirect te volgen ipv swap -->
             {% if current_user.email %}<td><button hx-post="/copy_collection/{{collection.id}}" hx-target="body">Maak kopie</a></td>{% endif %}

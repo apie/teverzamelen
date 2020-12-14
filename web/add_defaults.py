@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # Add admin user and default collections
 import flask_sqlalchemy
-from web.app import Collection, Item, User, Role, app
+from app import Collection, Item, User, Role, app
 from sqlalchemy import create_engine
 from flask_security import SQLAlchemyUserDatastore
 import csv
 from glob import glob
 from os.path import basename
-from web.config import ADMIN_PASSWORD
+from config import ADMIN_PASSWORD
 engine = create_engine('sqlite:///app.sqlite', echo = True)
  
 db = flask_sqlalchemy.SQLAlchemy(app)
@@ -24,7 +24,8 @@ if not admin:
 for collection in glob('../scripts/output/*.tsv'):
     with open(f'../scripts/{collection}') as f:
         collection_name = basename(collection).split('.')[0].capitalize()
-        if db.session.query(Collection).filter_by(name=collection_name).first():
+        if db.session.query(Collection).filter_by(user=admin, name=collection_name).first():
+            print(f"{collection_name} exists")
             continue  # exists already
         if collection_name == 'Suskeenwiske':
             continue  #FIXME suske en wiske kapot??

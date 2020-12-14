@@ -7,7 +7,7 @@
     {% if current_user.email %}
         <p>
             <a href="/public">Gedeelde lijstjes bekijken</a>.
-            <!-- TODO gedeelde lijstjes ook op frontpage? -->
+            <!-- TODO details van gedeelde lijstjes ook op frontpage? -->
         </p>
         <h2>Jouw lijstjes</h2>
         <form method="post" action="/api/collection">
@@ -24,8 +24,8 @@
             <tbody>
             {% for collection in collections %}
                 <tr>
-                    <td><a href="/collection/{{collection.id}}">{{ collection.name }}</a></td>
-                    <td>{{'Ja' if collection.public else 'Nee'}}</td>
+                    <td><a href="/collection/{{collection.id}}">{{ collection.name }} ({{ collection.items.count() }})</a></td>
+                    <td hx-patch='/collection/{{collection.id}}' name='public'>{{'Ja' if collection.public else 'Nee'}}</td>
                 </tr>
             {% endfor %}
             </tbody>
