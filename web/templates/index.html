@@ -5,6 +5,10 @@
 </h1>
 <p>
     {% if current_user.email %}
+        <p>
+            <a href="/public">Gedeelde lijstjes bekijken</a>.
+            <!-- TODO gedeelde lijstjes ook op frontpage? -->
+        </p>
         <h2>Jouw lijstjes</h2>
         <form method="post" action="/api/collection">
             <input type="text" placeholder="Lijstje" required>
@@ -26,10 +30,6 @@
             {% endfor %}
             </tbody>
         </table>
-        <p>
-            <a href="/public">Gedeelde lijstjes bekijken</a>.
-            <!-- TODO gedeelde lijstjes ook op frontpage? -->
-        </p>
     {% else %}
         <a href="/login">Log direct in</a> om een eigen lijstje te maken of bekijk de <a href="/public">gedeelde lijstjes</a>!
     {% endif %}

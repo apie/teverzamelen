@@ -8,16 +8,16 @@
             <!-- TODO doorklikken naar details van lijstje -->
             <th>Verzameling</th>
             <th>Gebruiker</th>
-            <!-- TODO kopieren van lijstje implementeren -->
             {% if current_user.email %}<th>Kopiëren</th>{% endif %}
         </tr>
     </thead>
     <tbody>
     {% for collection in collections %}
         <tr>
-            <td>{{ collection.name }}</td>
+            <td>{{ collection.name }} ({{ collection.items.count() }})</td>
             <td>{{ collection.user.email }}</td>
-            {% if current_user.email %}<td><a href="#">Kopieer lijstje</a></td>{% endif %}
+            <!-- TODO beter om gewoon redirect te volgen ipv swap -->
+            {% if current_user.email %}<td><button hx-post="/copy_collection/{{collection.id}}" hx-target="body">Maak kopie</a></td>{% endif %}
         </tr>
     {% endfor %}
     </tbody>

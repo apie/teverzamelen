@@ -123,11 +123,19 @@ def view_collection(id):
     return render_template('view_collection.html', title='Bewerk lijstje', items=items, collection_id=collection.id)
 
 
-@app.route('/copy_collection/<id>')
+@app.route('/copy_collection/<id>', methods=['POST'])
 @auth_required()
 def copy_collection(id):
-    # TODO Copy public collection to your collections
-    return f'TODO COPY {id} to {current_user.email}'
+    # Copy the collection and all the items in it.
+    # Only copy names. Not owned/read attributes.
+    collection = Collection.query.filter_by(public=True, id=id).first_or_404()
+    new_collection = Collection(name=collection.name, user=current_user)
+    db.session.add(new_collection)
+    db.session.commit()
+    for i, item in enumerate(collection.items.all()):
+        item_i = Item(name=item.name, collection=new_collection)
+    db.session.commit()
+    return redirect(f'/collection/{new_collection.id}')
 
 
 @app.route('/item/new', methods=['POST'])

@@ -2,6 +2,7 @@
 {% block body %}
 <a href="/">Terug</a>
 
+<!-- TODO remove collection -->
 <form hx-post="/item/new" hx-target="#collection_table_body" hx-swap="afterbegin">
     <input type="hidden" name="collection_id" value="{{collection_id}}">
     <input type="text" name="name" placeholder="Naam" required>
@@ -19,6 +20,7 @@
         <th>Gelezen</th>
         <!-- TODO rating column Rating -->
         <!-- TODO uitgavejaar -->
+        <!-- TODO delen -->
     </tr>
     </thead>
     <tbody id="collection_table_body" >
