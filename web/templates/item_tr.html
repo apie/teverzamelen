@@ -1,8 +1,9 @@
 
 <tr>
     <td>{{item.name}}</td>
-    <td>{{'Ja' if item.owned else 'Nee'}}</td>
-    <td>{{'Ja' if item.want else 'Nee'}}</td>
-    <td>{{'Ja' if item.read else 'Nee'}}</td>
-    <td><button class="btn btn-danger" hx-delete="/item/{{item.id}}">Delete</button></td>
+    <td hx-patch='/item/{{item.id}}' name='owned'>{{'Ja' if item.owned else 'Nee'}}</td>
+    <td hx-patch='/item/{{item.id}}' name='want'>{{'Ja' if item.want else 'Nee'}}</td>
+    <td hx-patch='/item/{{item.id}}' name='read'>{{'Ja' if item.read else 'Nee'}}</td>
+    <td><button class="btn btn-danger" hx-delete="/item/{{item.id}}"
+        hx-confirm="Weet je het zeker?" hx-target="closest tr" hx-swap="outerHTML swap:1s">Delete</button></td>
 </tr>

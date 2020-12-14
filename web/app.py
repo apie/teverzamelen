@@ -137,14 +137,11 @@ def new_item():
     name = request.form['name']
     collection = Collection.query.filter_by(user=current_user, id=collection_id).first()
     item = Item(name=name, collection=collection)
-    # import pdb;pdb.set_trace()
     db.session.add(item)
     db.session.commit()
-    print(item)
     return render_template('item_tr.html', item=item)
 
-#TODO use PATCH?
-@app.route('/item/<id>', methods=['PUT', 'DELETE'])
+@app.route('/item/<id>', methods=['PATCH', 'DELETE'])
 @auth_required()
 def change_item(id):
     item = Item.query.filter_by(id=id).first()
@@ -154,8 +151,18 @@ def change_item(id):
         db.session.delete(item)
         db.session.commit()
         return ''
+    if request.method == 'PATCH':
+        field = request.environ['HTTP_HX_TRIGGER_NAME']
+        val = getattr(item, field)
+        if isinstance(val, bool):
+            newval = not val
+            retval = 'Ja' if newval else 'Nee'
+        else:
+            raise Exception('Not implemented')
+        Item.query.filter_by(id=id).update({field: newval})
+        db.session.commit()
+        return retval
 
-    #TODO PUT: change item
 
 
 if __name__ == '__main__':

@@ -21,7 +21,7 @@
         <!-- TODO uitgavejaar -->
     </tr>
     </thead>
-    <tbody id="collection_table_body" hx-confirm="Weet je het zeker?" hx-target="closest tr" hx-swap="outerHTML swap:1s">
+    <tbody id="collection_table_body" >
         {% for item in items %}
             {% include 'item_tr.html' %}
         {% endfor %}
