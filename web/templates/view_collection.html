@@ -23,13 +23,7 @@
     </thead>
     <tbody id="collection_table_body" hx-confirm="Weet je het zeker?" hx-target="closest tr" hx-swap="outerHTML swap:1s">
         {% for item in items %}
-            <tr>
-                <td>{{item.name}}</td>
-                <td>{{'Ja' if item.owned else 'Nee'}}</td>
-                <td>{{'Ja' if item.want else 'Nee'}}</td>
-                <td>{{'Ja' if item.read else 'Nee'}}</td>
-                <td><button class="btn btn-danger" hx-delete="/item/{{item.id}}">Delete</button></td>
-            </tr>
+            {% include 'item_tr.html' %}
         {% endfor %}
 </table>
 {% endblock body %}

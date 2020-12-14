@@ -1,0 +1,8 @@
+
+<tr>
+    <td>{{item.name}}</td>
+    <td>{{'Ja' if item.owned else 'Nee'}}</td>
+    <td>{{'Ja' if item.want else 'Nee'}}</td>
+    <td>{{'Ja' if item.read else 'Nee'}}</td>
+    <td><button class="btn btn-danger" hx-delete="/item/{{item.id}}">Delete</button></td>
+</tr>

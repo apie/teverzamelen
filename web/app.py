@@ -141,17 +141,9 @@ def new_item():
     db.session.add(item)
     db.session.commit()
     print(item)
-    # TODO use a template snippet for this and include it in two places
-    return render_template_string('''
-            <tr>
-                <td>{{item.name}}</td>
-                <td>{{'Ja' if item.owned else 'Nee'}}</td>
-                <td>{{'Ja' if item.want else 'Nee'}}</td>
-                <td>{{'Ja' if item.read else 'Nee'}}</td>
-                <td><button class="btn btn-danger" hx-delete="/item/{{item.id}}">Delete</button></td>
-            </tr>
-    ''', item=item)
+    return render_template('item_tr.html', item=item)
 
+#TODO use PATCH?
 @app.route('/item/<id>', methods=['PUT', 'DELETE'])
 @auth_required()
 def change_item(id):
