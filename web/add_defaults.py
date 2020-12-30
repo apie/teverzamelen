@@ -27,8 +27,6 @@ for collection in glob('../scripts/output/*.tsv'):
         if db.session.query(Collection).filter_by(user=admin, name=collection_name).first():
             print(f"{collection_name} exists")
             continue  # exists already
-        if collection_name == 'Suskeenwiske':
-            continue  #FIXME suske en wiske kapot??
         print(collection_name)
         #If new collection, add it to the database
         c = Collection(name=collection_name, user_id=admin.id, public=True)
