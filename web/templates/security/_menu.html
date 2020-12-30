@@ -1,6 +1,7 @@
 <!-- copied from original menu.html source file -->
+<!-- added some classes -->
 {% if security.registerable or security.recoverable or security.confirmable or security.unified_signin %}
-<div id='menu'>
+<div id='menu' class="w3-theme-dark w3-padding">
 <h2>{{ _('Menu') }}</h2>
 <ul>
   {% if not skip_login_menu %}
