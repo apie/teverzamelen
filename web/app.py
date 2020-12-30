@@ -89,10 +89,8 @@ db.create_all()
 security = Security(app, user_datastore)
 
 
-# TODO favicon
 @app.route('/favicon.ico')
 def favicon():
-    return b''
     return app.send_static_file('favicon.ico')
 
 

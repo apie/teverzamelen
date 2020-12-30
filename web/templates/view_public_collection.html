@@ -4,7 +4,13 @@
     <i class="fa fa-arrow-left"></i>Terug
 </a>
 <h2>Lijstje "{{collection.name}}" van {{collection.user.email}}</h2>
-<span class="htmx-indicator">EVEN GEDULD AUB</span>
+{% if current_user.email %}
+    <td>
+        <button hx-post="/copy_collection/{{collection.id}}" hx-target="body" class="w3-btn w3-brown">
+            <i class="fa fa-copy"></i> Kopieer naar mijn account
+        </button>
+    </td>
+{% endif %}
 <table id="collection_table" class="w3-table w3-hoverable">
     <thead>
     <tr>
@@ -24,4 +30,7 @@
             {% include 'item_tr.html' %}
         {% endfor %}
 </table>
+<a href="#top">
+    <i class="fa fa-arrow-up"></i> Naar boven
+</a>
 {% endblock body %}

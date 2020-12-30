@@ -4,12 +4,11 @@
     <i class="fa fa-arrow-left"></i>Terug
 </a>
 <h1>{{ title }}</h1>
-<table id="public_table">
+<table id="public_table" class="w3-table w3-hoverable">
     <thead>
         <tr>
             <th>Verzameling</th>
             <th>Gebruiker</th>
-            {% if current_user.email %}<th>Kopiëren</th>{% endif %}
         </tr>
     </thead>
     <tbody>
@@ -17,13 +16,6 @@
         <tr>
             <td><a href="/public/collection/{{collection.id}}">{{ collection.name }}</a> ({{ collection.items.count() }})</td>
             <td>{{ collection.user.email }}</td>
-            {% if current_user.email %}
-                <td>
-                    <button hx-post="/copy_collection/{{collection.id}}" hx-target="body" class="w3-button">
-                        <i class="fa fa-copy"></i>
-                    </button>
-                </td>
-            {% endif %}
         </tr>
     {% endfor %}
     </tbody>
