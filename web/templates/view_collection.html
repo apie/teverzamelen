@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% block body %}
 <a class="w3-btn" href="/">
-    <i class="fas fa-arrow-left"></i> Terug
+    <i class="fa fa-arrow-left"></i> Terug
 </a>
 <h2>Bewerk lijstje "{{collection.name}}"
 
 <!-- TODO geen swap maar gewoon redirect doen -->
 <button class="w3-button w3-hover-red w3-small" hx-delete="/collection/{{collection.id}}" hx-confirm="Weet je het zeker?" hx-target="body" hx-swap="swap:1s">
-    <i class="far fa-trash-alt"></i>
+    <i class="fa fa-trash"></i>
 </button>
 </h2>
 
@@ -37,6 +37,6 @@
         {% endfor %}
 </table>
 <a href="#top">
-    <i class="fas fa-arrow-up"></i> Naar boven
+    <i class="fa fa-arrow-up"></i> Naar boven
 </a>
 {% endblock body %}

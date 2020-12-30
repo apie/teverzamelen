@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block body %}
 <a class="w3-btn" href="/">
-    <i class="fas fa-arrow-left"></i>Terug
+    <i class="fa fa-arrow-left"></i>Terug
 </a>
 <h1>{{ title }}</h1>
 <table id="public_table">
@@ -21,7 +21,7 @@
             {% if current_user.email %}
                 <td>
                     <button hx-post="/copy_collection/{{collection.id}}" hx-target="body" class="w3-button">
-                        <i class="far fa-copy"></i>
+                        <i class="fa fa-copy"></i>
                     </button>
                 </td>
             {% endif %}

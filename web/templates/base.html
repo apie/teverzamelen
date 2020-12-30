@@ -4,21 +4,19 @@
     <meta charset="UTF-8">
     <title>{{title}}</title>
     {% block styles %}
-      <link rel="stylesheet" href="/static/fa/css/all.css" /><!-- in final version use unpkg -->
       <link rel="stylesheet" href="/static/base.css" />
+      <link rel="stylesheet" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css" />
       <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <!--     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.22/r-2.2.6/datatables.min.css"/> -->
     {% endblock styles %}
     {% block javascript %}
         <script src="https://unpkg.com/htmx.org@0.3.0"></script>
-<!--        <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.22/r-2.2.6/datatables.min.js"></script> -->
     {% endblock javascript %}
 </head>
 <body class="w3-black w3-auto">
 <span id="top"></span>
 <div class="w3-container w3-right-align">
-    <i class="far fa-user"></i>
+    <i class="fa fa-user"></i>
     {% if current_user.email %}
         {{current_user.email}}.
         <a href="/logout">uitloggen</a>

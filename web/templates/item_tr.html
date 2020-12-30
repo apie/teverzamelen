@@ -18,7 +18,7 @@
     {% if current_user.email == item.collection.user.email %}
         <td>
             <button class="w3-input w3-hover-red" hx-delete="/item/{{item.id}}" hx-confirm="Weet je het zeker?" hx-target="closest tr" hx-swap="outerHTML swap:1s">
-                <i class="far fa-trash-alt"></i>
+                <i class="fa fa-trash"></i>
             </button>
         </td>
     {% endif %}

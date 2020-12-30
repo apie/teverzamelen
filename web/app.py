@@ -192,7 +192,7 @@ def new_item():
 def change_item(id):
     item = Item.query.filter_by(id=id).first()
     if item.collection.user != current_user:
-        return 'Unauthorized'
+        return 'Unauthorized', 401
     if request.method == 'DELETE':
         db.session.delete(item)
         db.session.commit()
@@ -202,13 +202,11 @@ def change_item(id):
         val = getattr(item, field)
         if isinstance(val, bool):
             newval = not val
-            retval = 'Ja' if newval else 'Nee'
         else:
             raise Exception('Not implemented')
         Item.query.filter_by(id=id).update({field: newval})
         db.session.commit()
         return render_template('item_tr.html', item=item)
-        return retval #TODO remove
 
 
 
