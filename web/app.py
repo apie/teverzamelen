@@ -118,10 +118,10 @@ def public():
 def view_public_collection(id):
     collection = Collection.query.filter_by(public=True, id=id).first_or_404()
     items = Item.query.filter_by(collection=collection)
-    # TODO speciaal template gebruiken
-    return render_template('view_collection.html', title='Bekijk gedeeld lijstje', items=items, collection=collection)
+    return render_template('view_public_collection.html', title='Bekijk gedeeld lijstje', items=items, collection=collection)
 
 def delete_collection(collection):
+    # TODO direct teruggaan
     Item.query.filter_by(collection=collection).delete()
     Collection.query.filter_by(id=collection.id).delete()
     db.session.commit()
