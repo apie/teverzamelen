@@ -1,0 +1,3 @@
+<button title="{{'Lijstje is gedeeld' if collection.public else 'Lijstje is privé'}}" class="w3-button {{'w3-green' if collection.public else 'w3-theme-dark'}} w3-hover-red w3-small" hx-patch="/collection/{{collection.id}}" hx-confirm="Weet je het zeker?" name="public" hx-swap="outerHTML">
+    <i class="fa fa-globe"></i>
+</button>

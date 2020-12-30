@@ -7,6 +7,7 @@
       <link rel="stylesheet" href="/static/base.css" />
       <link rel="stylesheet" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css" />
       <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+      <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-amber.css"> 
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% endblock styles %}
     {% block javascript %}
@@ -15,17 +16,23 @@
 </head>
 <body class="w3-black w3-auto">
 <span id="top"></span>
-<div class="w3-container w3-right-align">
-    <i class="fa fa-user"></i>
-    {% if current_user.email %}
-        {{current_user.email}}.
-        <a href="/logout">uitloggen</a>
-    {% else %}
-        Niet ingelogd.
-        <a href="/login">inloggen</a>
-    {% endif %}
+<div id="topbar">
+    <div class="w3-container w3-left">
+        <a href="/">Teverzamelen.nl</a>
+    </div>
+    <div class="w3-container w3-right">
+        <i class="fa fa-user"></i>
+        {% if current_user.email %}
+            {{current_user.email}}.
+            <a href="/logout">uitloggen</a>
+        {% else %}
+            Niet ingelogd.
+            <a href="/login">inloggen</a>
+        {% endif %}
+    </div>
+&nbsp;<!--force height-->
 </div>
-<div class="w3-container w3-amber w3-padding">
+<div class="w3-container w3-section w3-theme w3-padding">
     {% block body %}
     {% endblock body %}
 </div>

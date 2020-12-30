@@ -135,6 +135,8 @@ def patch_collection(collection):
         raise Exception('Not implemented')
     Collection.query.filter_by(id=collection.id).update({field: newval})
     db.session.commit()
+    if field == 'public':
+        return render_template('is_public.html', collection=collection)
     return retval
 
 @app.route('/collection/<id>', methods=['GET', 'DELETE', 'PATCH'])

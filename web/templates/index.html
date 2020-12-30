@@ -8,23 +8,23 @@
         <p>
             <a href="/public">Gedeelde lijstjes bekijken</a>.
         </p>
-        <h2>Jouw lijstjes</h2>
         <form method="post" action="/collection/new" class="w3-container">
-            <input class="w3-input" type="text" placeholder="postzegels" name="name" required>
-            <input class="w3-input" type="submit" value="Nieuw lijstje">
+            <input class="w3-input w3-theme-d2" type="text" placeholder="postzegels" name="name" required>
+            <input class="w3-input w3-theme-dark" type="submit" value="Nieuw lijstje">
         </form>
+        <h2>Jouw lijstjes</h2>
         <table id="my_collections" class="w3-table w3-hoverable">
             <thead>
                 <tr>
-                    <th>Naam<th>
-                    <th>Gedeeld<th>
+                    <th>Naam</th>
+                    <th>Gedeeld</th>
                 </tr>
             </thead>
             <tbody>
             {% for collection in collections %}
                 <tr>
                     <td><a href="/collection/{{collection.id}}">{{ collection.name }} ({{ collection.items.count() }})</a></td>
-                    <td hx-patch='/collection/{{collection.id}}' name='public'>{{'Ja' if collection.public else 'Nee'}}</td>
+                    <td>{{'Ja' if collection.public else 'Nee'}}</td>
                 </tr>
             {% endfor %}
             </tbody>
