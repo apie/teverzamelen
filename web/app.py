@@ -151,6 +151,16 @@ def view_collection(id):
     return render_template('view_collection.html', title='Bewerk lijstje', items=items, collection=collection)
 
 
+@app.route('/collection/new', methods=['POST'])
+@auth_required()
+def new_collection():
+    name = request.form['name']
+    new_collection = Collection(name=name, user=current_user)
+    db.session.add(new_collection)
+    db.session.commit()
+    return redirect(f'/collection/{new_collection.id}')
+
+
 @app.route('/copy_collection/<id>', methods=['POST'])
 @auth_required()
 def copy_collection(id):
@@ -197,7 +207,8 @@ def change_item(id):
             raise Exception('Not implemented')
         Item.query.filter_by(id=id).update({field: newval})
         db.session.commit()
-        return retval
+        return render_template('item_tr.html', item=item)
+        return retval #TODO remove
 
 
 

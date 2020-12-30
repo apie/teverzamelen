@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block body %}
-<a href="/">Terug</a>
+<a class="w3-btn" href="/">
+    <i class="fas fa-arrow-left"></i>Terug
+</a>
 <h1>{{ title }}</h1>
 <table id="public_table">
     <thead>
@@ -16,7 +18,13 @@
             <td><a href="/public/collection/{{collection.id}}">{{ collection.name }}</a> ({{ collection.items.count() }})</td>
             <td>{{ collection.user.email }}</td>
             <!-- TODO beter om gewoon redirect te volgen ipv swap -->
-            {% if current_user.email %}<td><button hx-post="/copy_collection/{{collection.id}}" hx-target="body">Maak kopie</a></td>{% endif %}
+            {% if current_user.email %}
+                <td>
+                    <button hx-post="/copy_collection/{{collection.id}}" hx-target="body" class="w3-button">
+                        <i class="far fa-copy"></i>
+                    </button>
+                </td>
+            {% endif %}
         </tr>
     {% endfor %}
     </tbody>

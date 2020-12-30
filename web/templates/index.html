@@ -10,9 +10,9 @@
             <!-- TODO details van gedeelde lijstjes ook op frontpage? -->
         </p>
         <h2>Jouw lijstjes</h2>
-        <form method="post" action="/api/collection">
-            <input type="text" placeholder="Lijstje" required>
-            <input type="submit" value="Nieuw"> <!-- TODO via htmx -->
+        <form method="post" action="/collection/new" class="w3-container">
+            <input class="w3-input" type="text" placeholder="postzegels" name="name" required>
+            <input class="w3-input" type="submit" value="Nieuw lijstje">
         </form>
         <table id="my_collections" class="hover " >
             <thead>
