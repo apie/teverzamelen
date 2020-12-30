@@ -15,5 +15,5 @@ fi
 source venv/bin/activate
 pip3 install pip-tools
 pip-sync
-venv/bin/gunicorn app:app --reload -b localhost:8002
+venv/bin/gunicorn app:app --reload -b localhost:8003
 
