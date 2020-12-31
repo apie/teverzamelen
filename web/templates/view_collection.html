@@ -9,7 +9,7 @@
         <i class="fa fa-trash"></i>
     </button>
     <div class="w3-small w3-right">
-        {% include 'is_public.html' %}
+        {% include 'partials/is_public.html' %}
     </div>
 </h2>
 
@@ -18,7 +18,6 @@
     <input class="w3-input w3-theme-d2" type="text" name="name" placeholder="Nieuw item" required>
     <input class="w3-input w3-theme-dark" type="submit" value="Toevoegen">
 </form>
-<!-- TODO zoeken -->
 <table id="collection_table" class="w3-table w3-hoverable">
     <thead>
     <tr>
@@ -35,7 +34,7 @@
     </thead>
     <tbody id="collection_table_body" >
         {% for item in items %}
-            {% include 'item_tr.html' %}
+            {% include 'partials/item_tr.html' %}
         {% endfor %}
 </table>
 <a href="#top" class="w3-margin-top">

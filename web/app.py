@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+from functools import lru_cache
 
 import flask
 import flask_sqlalchemy
@@ -90,11 +91,13 @@ security = Security(app, user_datastore)
 
 
 @app.route('/favicon.ico')
+@lru_cache()
 def favicon():
     return app.send_static_file('favicon.ico')
 
 
 @app.route('/static/<path:path>')
+@lru_cache()
 def send_static(path):
     return send_from_directory('static', path)
 
@@ -110,13 +113,13 @@ def index():
 @app.route('/public')
 def public():
     collections = Collection.query.filter_by(public=True)
-    return render_template('public_index.html', title='Gedeelde lijstjes', collections=collections)
+    return render_template('public/public_index.html', title='Gedeelde lijstjes', collections=collections)
 
 @app.route('/public/collection/<id>')
 def view_public_collection(id):
     collection = Collection.query.filter_by(public=True, id=id).first_or_404()
     items = Item.query.filter_by(collection=collection)
-    return render_template('view_public_collection.html', title='Bekijk gedeeld lijstje', items=items, collection=collection)
+    return render_template('public/view_public_collection.html', title='Bekijk gedeeld lijstje', items=items, collection=collection)
 
 def delete_collection(collection):
     # TODO direct teruggaan
@@ -136,7 +139,7 @@ def patch_collection(collection):
     Collection.query.filter_by(id=collection.id).update({field: newval})
     db.session.commit()
     if field == 'public':
-        return render_template('is_public.html', collection=collection)
+        return render_template('partials/is_public.html', collection=collection)
     return retval
 
 @app.route('/collection/<id>', methods=['GET', 'DELETE', 'PATCH'])
@@ -185,7 +188,7 @@ def new_item():
     item = Item(name=name, collection=collection)
     db.session.add(item)
     db.session.commit()
-    return render_template('item_tr.html', item=item)
+    return render_template('partials/item_tr.html', item=item)
 
 @app.route('/item/<id>', methods=['PATCH', 'DELETE'])
 @auth_required()
@@ -206,7 +209,7 @@ def change_item(id):
             raise Exception('Not implemented')
         Item.query.filter_by(id=id).update({field: newval})
         db.session.commit()
-        return render_template('item_tr.html', item=item)
+        return render_template('partials/item_tr.html', item=item)
 
 
 
