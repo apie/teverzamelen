@@ -38,7 +38,7 @@ for collection in glob('../scripts/output/*.tsv'):
             print(r)
             sequence = r[0].strip()
             if not sequence.isnumeric():
-                sequence = r[1].strip()
+                sequence = r[1].strip() if len(r) > 1 else ''
             if not sequence.isnumeric():
                 sequence = 0
             name = ' '.join(v.strip() for v in r)
