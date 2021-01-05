@@ -21,7 +21,7 @@
                 </tr>
             </thead>
             <tbody>
-            {% for collection in collections %}
+            {% for collection in collections|sort(attribute="name") %}
                 <tr>
                     <td><a href="/collection/{{collection.id}}">{{ collection.name }} ({{ collection.items.count() }})</a></td>
                     <td>{{'Ja' if collection.public else 'Nee'}}</td>
