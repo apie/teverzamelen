@@ -4,7 +4,8 @@
     <i class="fa fa-arrow-left"></i> Terug
 </a>
 <h1>{{ title }}</h1>
-<table id="public_table" class="w3-table w3-hoverable">
+ <input type="text" id="searchInput" onkeyup="searchTable('publicCollections')" placeholder="zoek" class="w3-input w3-theme-d2 w3-round">
+<table id="publicCollections" class="w3-table w3-hoverable">
     <thead>
         <tr>
             <th>Naam</th>

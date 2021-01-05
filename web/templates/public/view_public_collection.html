@@ -5,13 +5,12 @@
 </a>
 <h2>Lijstje "{{collection.name}}" van {{collection.user.email}}</h2>
 {% if current_user.email and not collection.user == current_user %}
-    <td>
-        <button hx-post="/copy_collection/{{collection.id}}" hx-target="body" class="w3-round w3-btn w3-brown">
-            <i class="fa fa-copy"></i> Kopieer naar mijn account
-        </button>
-    </td>
+    <button hx-post="/copy_collection/{{collection.id}}" hx-target="body" class="w3-round w3-btn w3-brown">
+        <i class="fa fa-copy"></i> Kopieer naar mijn account
+    </button>
 {% endif %}
-<table id="collection_table" class="w3-table w3-hoverable">
+ <input type="text" id="searchInput" onkeyup="searchTable('collectionTable')" placeholder="zoek" class="w3-input w3-theme-d2 w3-round w3-margin-top">
+<table id="collectionTable" class="w3-table w3-hoverable">
     <thead>
     <tr>
     <!-- sequence flipt de layout -->

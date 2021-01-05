@@ -18,7 +18,8 @@
     <input class="w3-round w3-input w3-theme-d2" type="text" name="name" placeholder="Nieuw item" required>
     <input class="w3-round w3-input w3-theme-dark" type="submit" value="Toevoegen">
 </form>
-<table id="collection_table" class="w3-table w3-hoverable">
+ <input type="text" id="searchInput" onkeyup="searchTable('collectionTable')" placeholder="zoek" class="w3-input w3-theme-d2 w3-round w3-margin-top">
+<table id="collectionTable" class="w3-table w3-hoverable">
     <thead>
     <tr>
     <!-- TODO sequence. flipt de layout -->
