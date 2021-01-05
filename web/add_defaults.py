@@ -23,7 +23,7 @@ if not admin:
 #Loop collections
 for collection in glob('../scripts/output/*.tsv'):
     with open(f'../scripts/{collection}') as f:
-        collection_name = basename(collection).split('.')[0].capitalize()
+        collection_name = basename(collection).split('.')[0].replace('_', ' ').title()
         if db.session.query(Collection).filter_by(user=admin, name=collection_name).first():
             print(f"{collection_name} exists")
             continue  # exists already
