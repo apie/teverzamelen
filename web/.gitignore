@@ -8,3 +8,4 @@ config.py
 *.db
 .vscode/
 *.code-workspace
+templates/footer.txt

@@ -16,8 +16,8 @@
 </head>
 <body class="w3-black w3-auto">
 <span id="top"></span>
-<div id="topbar">
-    <div class="w3-container w3-left">
+<div id="topbar" class="">
+    <div class="w3-container w3-left w3-hide-small">
         <a href="/">Teverzamelen.nl</a>
     </div>
     <div class="w3-container w3-right">
@@ -36,5 +36,10 @@
     {% block body %}
     {% endblock body %}
 </div>
+<footer class="w3-container">
+    <small>
+        {% include 'footer.txt' ignore missing %}
+    </small>
+</footer>
 </body>
 </html>
