@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import os
-from functools import lru_cache
 
 import flask
 import flask_sqlalchemy
@@ -91,13 +90,11 @@ security = Security(app, user_datastore)
 
 
 @app.route('/favicon.ico')
-@lru_cache()
 def favicon():
     return app.send_static_file('favicon.ico')
 
 
 @app.route('/static/<path:path>')
-@lru_cache()
 def send_static(path):
     return send_from_directory('static', path)
 
