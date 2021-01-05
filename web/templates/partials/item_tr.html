@@ -2,25 +2,23 @@
 <tr>
     <td>{{item.name}}</td>
     <td hx-patch='/item/{{item.id}}' name='owned' hx-target="closest tr" hx-swap="outerHTML">
-        <button class="w3-block w3-border {{'w3-green' if item.owned else 'w3-theme-dark'}} w3-hover-yellow">
+        <button class="w3-round w3-block w3-border-0 {{'w3-green' if item.owned else 'w3-theme-dark'}} w3-hover-yellow">
             {{'Ja' if item.owned else 'Nee'}}
         </button>
     </td>
     <td hx-patch='/item/{{item.id}}' name='want' hx-target="closest tr" hx-swap="outerHTML">
-        <button class="w3-block w3-border {{'w3-green' if item.want else 'w3-theme-dark'}} w3-hover-yellow">
+        <button class="w3-round w3-block w3-border-0 {{'w3-green' if item.want else 'w3-theme-dark'}} w3-hover-yellow">
             {{'Ja' if item.want else 'Nee'}}
         </button>
     </td>
     <td hx-patch='/item/{{item.id}}' name='read' hx-target="closest tr" hx-swap="outerHTML">
-        <button class="w3-block w3-border {{'w3-green' if item.read else 'w3-theme-dark'}} w3-hover-yellow">
+        <button class="w3-round w3-block w3-border-0 {{'w3-green' if item.read else 'w3-theme-dark'}} w3-hover-yellow">
             {{'Ja' if item.read else 'Nee'}}
         </button>
     </td>
-    {% if current_user.email == item.collection.user.email %}
-        <td class="w3-hide-small">
-            <button class="w3-block w3-border w3-theme-dark w3-hover-red" hx-delete="/item/{{item.id}}" hx-confirm="Weet je het zeker?" hx-target="closest tr" hx-swap="outerHTML swap:1s">
-                <i class="fa fa-trash"></i>
-            </button>
-        </td>
-    {% endif %}
+    <td class="w3-hide-small">
+        <button class="w3-round w3-block w3-border-0 w3-theme-dark w3-hover-red" hx-delete="/item/{{item.id}}" hx-confirm="Weet je het zeker?" hx-target="closest tr" hx-swap="outerHTML swap:1s">
+            <i class="fa fa-trash"></i>
+        </button>
+    </td>
 </tr>

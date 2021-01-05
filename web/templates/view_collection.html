@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block body %}
-<a class="w3-btn w3-theme-dark" href="/">
+<a class="w3-round w3-btn w3-theme-dark" href="/">
     <i class="fa fa-arrow-left"></i> Terug
 </a>
 <h2>
     Bewerk lijstje "{{collection.name}}"
-    <button class="w3-button w3-hover-red w3-small" hx-delete="/collection/{{collection.id}}" hx-confirm="Weet je het zeker?" hx-target="body" hx-swap="swap:1s">
+    <button class="w3-round w3-button w3-hover-red w3-small" hx-delete="/collection/{{collection.id}}" hx-confirm="Weet je het zeker?" hx-target="body" hx-swap="swap:1s">
         <i class="fa fa-trash"></i>
     </button>
     <div class="w3-small w3-right">
@@ -15,8 +15,8 @@
 
 <form hx-post="/item/new" hx-target="#collection_table_body" hx-swap="afterbegin" class="w3-container">
     <input type="hidden" name="collection_id" value="{{collection.id}}">
-    <input class="w3-input w3-theme-d2" type="text" name="name" placeholder="Nieuw item" required>
-    <input class="w3-input w3-theme-dark" type="submit" value="Toevoegen">
+    <input class="w3-round w3-input w3-theme-d2" type="text" name="name" placeholder="Nieuw item" required>
+    <input class="w3-round w3-input w3-theme-dark" type="submit" value="Toevoegen">
 </form>
 <table id="collection_table" class="w3-table w3-hoverable">
     <thead>
@@ -24,8 +24,8 @@
     <!-- TODO sequence. flipt de layout -->
 <!--        <th>Sequence<th> -->
         <th>Naam</th>
-        <th>Heb ik</th>
-        <th>Wil ik</th>
+        <th>Heb ik al</th>
+        <th>Wil ik graag</th>
         <th>Gelezen</th>
         <!-- TODO rating -->
         <!-- TODO uitgavejaar -->

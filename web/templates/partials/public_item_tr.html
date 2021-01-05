@@ -1,0 +1,14 @@
+<!-- w3-hover does not support theme. So we defined these colors hardcoded. -->
+<tr>
+    <td>{{item.name}}</td>
+    <td>
+        <button class="w3-round w3-block w3-border-0 {{'w3-green' if item.owned else 'w3-theme-dark'}}">
+            {{'Ja' if item.owned else 'Nee'}}
+        </button>
+    </td>
+    <td>
+        <button class="w3-round w3-block w3-border-0 {{'w3-green' if item.want else 'w3-theme-dark'}}">
+            {{'Ja' if item.want else 'Nee'}}
+        </button>
+    </td>
+</tr>

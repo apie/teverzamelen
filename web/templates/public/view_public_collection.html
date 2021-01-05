@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% block body %}
-<a class="w3-btn w3-theme-dark" href="/public">
+<a class="w3-round w3-btn w3-theme-dark" href="/public">
     <i class="fa fa-arrow-left"></i> Terug
 </a>
 <h2>Lijstje "{{collection.name}}" van {{collection.user.email}}</h2>
 {% if current_user.email and not collection.user == current_user %}
     <td>
-        <button hx-post="/copy_collection/{{collection.id}}" hx-target="body" class="w3-btn w3-brown">
+        <button hx-post="/copy_collection/{{collection.id}}" hx-target="body" class="w3-round w3-btn w3-brown">
             <i class="fa fa-copy"></i> Kopieer naar mijn account
         </button>
     </td>
@@ -17,9 +17,8 @@
     <!-- sequence flipt de layout -->
 <!--        <th>Sequence<th> -->
         <th>Naam</th>
-        <th>Heb ik</th>
-        <th>Wil ik</th>
-        <th>Gelezen</th>
+        <th>Heb ik al</th>
+        <th>Wil ik graag</th>
         <!-- rating column Rating -->
         <!-- uitgavejaar -->
         <!-- TODO afstrepen als cadeau -->
@@ -27,7 +26,7 @@
     </thead>
     <tbody id="collection_table_body" >
         {% for item in items %}
-            {% include 'partials/item_tr.html' %}
+            {% include 'partials/public_item_tr.html' %}
         {% endfor %}
 </table>
 <a href="#top">
