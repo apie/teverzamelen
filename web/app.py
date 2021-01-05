@@ -104,7 +104,7 @@ def index():
     collections = ()
     if getattr(current_user, 'email', None):
         collections = Collection.query.filter_by(user=current_user)
-    return render_template('index.html', title='Teverzamelen.nl', collections=collections)
+    return render_template('index.html', title='Welkom', collections=collections)
 
 
 @app.route('/public')
