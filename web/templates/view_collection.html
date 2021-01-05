@@ -5,15 +5,18 @@
 </a>
 <h2>
     Bewerk lijstje "{{collection.name}}"
-    <button class="w3-round w3-button w3-hover-red w3-small" hx-delete="/collection/{{collection.id}}" hx-confirm="Weet je het zeker?" hx-target="body" hx-swap="swap:1s">
+    <button class="w3-round w3-button w3-hover-red w3-small" hx-delete="/collection/{{collection.id}}" hx-confirm="Weet je het zeker?" hx-target="body" hx-swap="swap:1s" title="Lijst verwijderen">
         <i class="fa fa-trash"></i>
+    </button>
+    <button class="w3-round w3-button w3-hover-yellow w3-small" title="Nieuw item" onClick="document.getElementById('newItemForm').classList.toggle('w3-hide');">
+        <i class="fa fa-plus"></i>
     </button>
     <div class="w3-small w3-right">
         {% include 'partials/is_public.html' %}
     </div>
 </h2>
 
-<form hx-post="/item/new" hx-target="#collection_table_body" hx-swap="afterbegin" class="w3-container">
+<form id="newItemForm" hx-post="/item/new" hx-target="#collection_table_body" hx-swap="afterbegin" class="w3-container w3-hide">
     <input type="hidden" name="collection_id" value="{{collection.id}}">
     <input class="w3-round w3-input w3-theme-d2" type="text" name="name" placeholder="Nieuw item" required>
     <input class="w3-round w3-input w3-theme-dark" type="submit" value="Toevoegen">
