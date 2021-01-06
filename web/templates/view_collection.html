@@ -5,14 +5,17 @@
 </a>
 <h2>
     Bewerk lijstje "{{collection.name}}"
-    <button class="w3-round w3-button w3-hover-red w3-small" hx-delete="/collection/{{collection.id}}" hx-confirm="Weet je het zeker?" hx-target="body" hx-swap="swap:1s" title="Lijst verwijderen">
-        <i class="fa fa-trash"></i>
-    </button>
-    <button class="w3-round w3-button w3-hover-yellow w3-small" title="Nieuw item" onClick="document.getElementById('newItemForm').classList.toggle('w3-hide');">
+    <button class="w3-round w3-button w3-hover-yellow w3-small" title="Toon formulier voor nieuw item" onClick="document.getElementById('newItemForm').classList.toggle('w3-hide');">
         <i class="fa fa-plus"></i>
+    </button>
+    <button class="w3-round w3-button w3-hover-yellow w3-small" title="Toon knoppen om items te verwijderen" onClick="[].forEach.call(document.getElementsByClassName('delete-item'), (el) => el.classList.toggle('w3-hide'))">
+        <i class="fa fa-trash"></i>
     </button>
     <div class="w3-small w3-right">
         {% include 'partials/is_public.html' %}
+    <button class="w3-round w3-button w3-hover-red w3-small" hx-delete="/collection/{{collection.id}}" hx-confirm="Weet je het zeker?" hx-target="body" hx-swap="swap:1s" title="Complete lijst verwijderen">
+        <i class="fa fa-trash"></i>
+    </button>
     </div>
 </h2>
 
@@ -33,7 +36,7 @@
         <th>Gelezen</th>
         <!-- TODO rating -->
         <!-- TODO uitgavejaar -->
-        <th class="w3-hide-small">Verwijder</th>
+        <th class="w3-hide-small w3-hide delete-item">Verwijder</th>
     </tr>
     </thead>
     <tbody id="collection_table_body" >
