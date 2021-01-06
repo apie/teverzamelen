@@ -4,7 +4,7 @@
     <i class="fa fa-arrow-left"></i> Terug
 </a>
 <h2>Lijstje "{{collection.name}}" van {{collection.user.email}}</h2>
-{% if current_user.email and not collection.user == current_user %}
+{% if not current_user.is_anonymous and not collection.user == current_user and not in_my_collection %}
     <button hx-post="/copy_collection/{{collection.id}}" hx-target="body" class="w3-round w3-btn w3-brown">
         <i class="fa fa-copy"></i> Kopieer naar mijn account
     </button>
@@ -24,7 +24,7 @@
     </tr>
     </thead>
     <tbody id="collection_table_body" >
-        {% for item in items %}
+        {% for item in collection.items %}
             {% include 'partials/public_item_tr.html' %}
         {% endfor %}
 </table>

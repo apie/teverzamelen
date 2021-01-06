@@ -102,7 +102,7 @@ def send_static(path):
 @app.route('/')
 def index():
     collections = ()
-    if getattr(current_user, 'email', None):
+    if not current_user.is_anonymous:
         collections = Collection.query.filter_by(user=current_user)
     return render_template('index.html', title='Welkom', collections=collections)
 
@@ -123,8 +123,12 @@ def public_user(id_or_email):
 @app.route('/public/collection/<id>')
 def view_public_collection(id):
     collection = Collection.query.filter_by(public=True, id=id).first_or_404()
-    items = Item.query.filter_by(collection=collection)
-    return render_template('public/view_public_collection.html', title='Bekijk gedeeld lijstje', items=items, collection=collection)
+    return render_template(
+        'public/view_public_collection.html',
+        title='Bekijk gedeeld lijstje',
+        collection=collection,
+        in_my_collection=False if current_user.is_anonymous else Collection.query.filter_by(user=current_user, name=collection.name).count() > 0,
+    )
 
 def delete_collection(collection):
     # TODO direct teruggaan
@@ -155,8 +159,7 @@ def view_collection(id):
         return delete_collection(collection)
     elif request.method == 'PATCH':
         return patch_collection(collection)
-    items = Item.query.filter_by(collection=collection)
-    return render_template('view_collection.html', title='Bewerk lijstje', items=items, collection=collection)
+    return render_template('view_collection.html', title='Bewerk lijstje', collection=collection)
 
 
 @app.route('/collection/new', methods=['POST'])
