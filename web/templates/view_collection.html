@@ -5,19 +5,23 @@
 </a>
 <h2>
     Bewerk lijstje "{{collection.name}}"
-    <button class="w3-round w3-button w3-hover-yellow w3-small" title="Toon formulier voor nieuw item" onClick="document.getElementById('newItemForm').classList.toggle('w3-hide');">
-        <i class="fa fa-plus"></i>
-    </button>
-    <button class="w3-round w3-button w3-hover-yellow w3-small" title="Toon knoppen om items te verwijderen" onClick="[].forEach.call(document.getElementsByClassName('delete-item'), (el) => el.classList.toggle('w3-hide'))">
-        <i class="fa fa-trash"></i>
-    </button>
+</h2>
+<div class="w3-container">
+    <div class="w3-small w3-left">
+        <button class="w3-round w3-button w3-hover-yellow w3-small" title="Toon formulier voor nieuw item" onClick="document.getElementById('newItemForm').classList.toggle('w3-hide');">
+            <i class="fa fa-plus"></i>
+        </button>
+        <button class="w3-round w3-button w3-hover-yellow w3-small" title="Toon knoppen om items te verwijderen" onClick="[].forEach.call(document.getElementsByClassName('delete-item'), (el) => el.classList.toggle('w3-hide'))">
+            <i class="fa fa-trash"></i>
+        </button>
+    </div>
     <div class="w3-small w3-right">
         {% include 'partials/is_public.html' %}
         <button class="w3-round w3-button w3-hover-red w3-small" hx-delete="/collection/{{collection.id}}" hx-confirm="Weet je het zeker?" hx-target="body" hx-swap="swap:1s" title="Complete lijst verwijderen">
             <i class="fa fa-trash"></i>
         </button>
     </div>
-</h2>
+</div>
 
 <form id="newItemForm" hx-post="/item/new" hx-target="#collection_table_body" hx-swap="afterbegin" class="w3-container w3-hide">
     <input type="hidden" name="collection_id" value="{{collection.id}}">
