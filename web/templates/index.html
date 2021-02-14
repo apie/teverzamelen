@@ -3,7 +3,6 @@
 <h1>
     Welkom op Teverzamelen.nl!
 </h1>
-<p>
     {% if current_user.email %}
         <p>
             <a href="/public">Gedeelde lijstjes bekijken</a>.
@@ -32,5 +31,4 @@
     {% else %}
         <a href="/login">Log direct in</a> om een eigen lijstje te maken of bekijk de <a href="/public">gedeelde lijstjes</a>!
     {% endif %}
-</p>
 {% endblock body %}
