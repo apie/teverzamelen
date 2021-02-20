@@ -1,5 +1,5 @@
 <!-- w3-hover does not support theme. So we defined these colors hardcoded. -->
-<tr class="owned-{{item.owned}} {{'w3-hide' if item.owned}}">
+<tr class="owned-{{item.owned}}">
     <td>{{item.name}}</td>
     <td hx-patch='/item/{{item.id}}' name='owned' hx-target="closest tr" hx-swap="outerHTML">
         <button class="w3-round w3-block w3-border-0 {{'w3-green' if item.owned else 'w3-theme-dark'}} w3-hover-yellow">

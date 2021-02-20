@@ -29,14 +29,6 @@
     <input class="w3-round w3-input w3-theme-dark" type="submit" value="Toevoegen">
 </form>
 
-<div class="w3-container w3-right">
-<button class="w3-round w3-button w3-hover-yellow w3-small" title="Wissel tussen tonen alle items en ontbrekende items" onClick="[].forEach.call(document.getElementsByClassName('owned-True'), (el) => el.classList.toggle('w3-hide'))">
-    <i class="fa fa-ban">&nbsp;
-        <span class="owned-True">{{collection.items.filter_by(owned=True).count()}} items verborgen</span>
-        <span class="owned-True w3-hide">'Heb ik' filteren</span>
-    </i>
-</button>
-</div>
  <input type="text" id="searchInput" onkeyup="searchTable('collectionTable')" placeholder="zoeken" class="w3-input w3-theme-d2 w3-round w3-margin-top">
 <table id="collectionTable" class="w3-table w3-hoverable">
     <thead>
