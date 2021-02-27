@@ -1,4 +1,3 @@
-pip-tools
 Flask-Sqlalchemy
 gunicorn
 flask-security-too
