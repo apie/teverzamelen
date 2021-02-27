@@ -3,7 +3,7 @@
 <a class="w3-round w3-btn w3-theme-dark" href="/public">
     <i class="fa fa-arrow-left"></i> Terug
 </a>
-<h2>Lijstje "{{collection.name}}" van {{collection.user.email}}</h2>
+<h2>Lijstje "{{collection.name}}" van {{collection.user.email|replace('@','AT')}}</h2>
 {% if not current_user.is_anonymous and not collection.user == current_user and not in_my_collection %}
     <button hx-post="/copy_collection/{{collection.id}}" hx-target="body" class="w3-round w3-btn w3-brown">
         <i class="fa fa-copy"></i> Kopieer naar mijn account
