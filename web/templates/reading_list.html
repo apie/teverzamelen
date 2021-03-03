@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block body %}
+<a class="w3-round w3-btn w3-theme-dark" href="/">
+    <i class="fa fa-arrow-left"></i> Terug
+</a>
+<h2>
+    {{title}}
+</h2>
+<p>Hieronder staan alle items in jouw bezit die je nog niet gelezen hebt. Klik op de knop achteraan om iets als gelezen te markeren.</p>
+ <input type="text" id="searchInput" onkeyup="searchTable('itemTable')" placeholder="zoeken" class="w3-input w3-theme-d2 w3-round w3-margin-top" autofocus>
+<table id="itemTable" class="w3-table w3-hoverable">
+    <thead>
+    <tr>
+        <th>Naam</th>
+        <th>Verzameling</th>
+        <th>Gelezen</th>
+    </tr>
+    </thead>
+    <tbody id="item_table_body" >
+        {% for item in to_read|sort(attribute="collection.name,name") %}
+            {% include 'partials/reading_list_item_tr.html' %}
+        {% endfor %}
+</table>
+<a href="#top" class="w3-margin-top">
+    <i class="fa fa-arrow-up"></i> Naar boven
+</a>
+{% endblock body %}

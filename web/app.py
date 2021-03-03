@@ -101,10 +101,11 @@ def send_static(path):
 
 @app.route('/')
 def index():
-    collections = ()
+    collections = to_read = ()
     if not current_user.is_anonymous:
         collections = Collection.query.filter_by(user=current_user)
-    return render_template('index.html', title='Welkom', collections=collections)
+        to_read = Item.query.filter_by(read=False).join(Item.collection).filter_by(user=current_user).count()
+    return render_template('index.html', title='Welkom', collections=collections, to_read=to_read)
 
 
 @app.route('/public')
@@ -218,8 +219,17 @@ def change_item(id):
             raise Exception('Not implemented')
         Item.query.filter_by(id=id).update({field: newval})
         db.session.commit()
+        if request.environ['HTTP_REFERER'].endswith('reading_list'):
+            return '' # Item marked as read. Do not return anything
         return render_template('partials/item_tr.html', item=item)
 
+
+@app.route('/reading_list')
+@auth_required()
+def reading_list():
+    collections = Collection.query.filter_by(user=current_user)
+    to_read = Item.query.filter_by(read=False).join(Item.collection).filter_by(user=current_user)
+    return render_template('reading_list.html', title='Leeslijst', to_read=to_read)
 
 
 if __name__ == '__main__':
