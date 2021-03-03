@@ -198,6 +198,7 @@ def new_item():
     db.session.commit()
     return render_template('partials/item_tr.html', item=item)
 
+
 @app.route('/item/<id>', methods=['PATCH', 'DELETE'])
 @auth_required()
 def change_item(id):
