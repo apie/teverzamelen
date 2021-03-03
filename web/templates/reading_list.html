@@ -17,7 +17,7 @@
     </tr>
     </thead>
     <tbody id="item_table_body" >
-        {% for item in to_read|sort(attribute="collection.name,name") %}
+        {% for item in to_read|sort(attribute="collection.name") %}
             {% include 'partials/reading_list_item_tr.html' %}
         {% endfor %}
 </table>
