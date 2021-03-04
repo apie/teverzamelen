@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # Add admin user and default collections
+# First run the import script you like and save the output in the output dir as tsv file. Then run this script. You can run this script multiple times.
 import flask_sqlalchemy
 from app import Collection, Item, User, Role, app
 from sqlalchemy import create_engine

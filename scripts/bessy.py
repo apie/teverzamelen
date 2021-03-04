@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# By Apie 2020-10-02
+# By Apie 2021-03-04
 # License: MIT
 from functools import partial
 from tabulate import tabulate
