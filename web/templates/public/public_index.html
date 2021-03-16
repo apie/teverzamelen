@@ -1,25 +1,23 @@
 {% extends "base.html" %}
 {% block body %}
-<a class="w3-round w3-btn w3-theme-dark" href="{{back}}">
+<a class="w3-round w3-btn w3-theme-dark" href="/">
     <i class="fa fa-arrow-left"></i> Terug
 </a>
 <h1>{{ title }}</h1>
 <p>
-    Hier zie je de gedeelde lijstjes. Tussen haakjes zie je hoeveel items nog ontbreken in de verzameling.
+    Hier zie je de gebruikers met gedeelde lijstjes. Klik op de gebruiker om de lijstjes te bekijken.
 </p>
  <input type="text" id="searchInput" onkeyup="searchTable('publicCollections')" placeholder="zoeken" class="w3-input w3-theme-d2 w3-round" autofocus>
 <table id="publicCollections" class="w3-table w3-hoverable">
     <thead>
         <tr>
-            <th>Naam</th>
             <th>Gebruiker</th>
         </tr>
     </thead>
     <tbody>
-    {% for collection in collections|sort(attribute="user.email,name") %}
+    {% for user in users|sort(attribute="email") %}
         <tr>
-            <td><a href="/public/collection/{{collection.id}}">{{ collection.name }}</a> ({{ collection.items.filter_by(owned=False).count() }})</td>
-            <td><a href="/public/user/{{ collection.user.id }}">{{ collection.user.email.split('@')[0] }}</a></td>
+            <td><a href="/public/user/{{ user.id }}">{{ user.email.split('@')[0] }}</a></td>
         </tr>
     {% endfor %}
     </tbody>

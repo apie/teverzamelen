@@ -55,7 +55,7 @@ class Collection(db.Model):
     __tablename__ = 'collection'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship("User")
+    user = db.relationship("User", backref=db.backref('collections', lazy='dynamic'))
     name = db.Column(db.String(255))
     public = db.Column(db.Boolean(), default=False)
 
@@ -110,8 +110,8 @@ def index():
 
 @app.route('/public')
 def public():
-    collections = Collection.query.filter_by(public=True)
-    return render_template('public/public_index.html', title='Gedeelde lijstjes', collections=collections, back='/')
+    users = User.query.join(User.collections).filter_by(public=True)
+    return render_template('public/public_index.html', title='Gedeelde lijstjes', users=users)
 
 @app.route('/public/user/<id_or_email>')
 def public_user(id_or_email):
@@ -119,7 +119,7 @@ def public_user(id_or_email):
     if not user:
         return 'Unknown user', 404
     collections = Collection.query.filter_by(public=True, user=user)
-    return render_template('public/public_index.html', title=f"Gedeelde lijstjes van {user.email.split('@')[0]}", collections=collections, back='/public')
+    return render_template('public/public_collection.html', title=f"Gedeelde lijstjes van {user.email.split('@')[0]}", collections=collections)
 
 @app.route('/public/collection/<id>')
 def view_public_collection(id):
