@@ -115,11 +115,11 @@ def public():
 
 @app.route('/public/user/<id_or_email>')
 def public_user(id_or_email):
-    user = User.query.filter_by(id=id_or_email).first() or User.query.filter_by(email=id_or_email.replace('AT','@')).first()
+    user = User.query.filter_by(id=id_or_email).first() or User.query.filter_by(email=id_or_email).first()
     if not user:
         return 'Unknown user', 404
     collections = Collection.query.filter_by(public=True, user=user)
-    return render_template('public/public_index.html', title=f"Gedeelde lijstjes van {user.email.replace('@','AT')}", collections=collections)
+    return render_template('public/public_index.html', title=f"Gedeelde lijstjes van {user.email.split('@')[0]}", collections=collections)
 
 @app.route('/public/collection/<id>')
 def view_public_collection(id):

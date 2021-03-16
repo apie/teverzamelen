@@ -19,7 +19,7 @@
     {% for collection in collections|sort(attribute="user.email,name") %}
         <tr>
             <td><a href="/public/collection/{{collection.id}}">{{ collection.name }}</a> ({{ collection.items.filter_by(owned=False).count() }})</td>
-            <td><a href="/public/user/{{ collection.user.email|replace('@','AT') }}">{{ collection.user.email|replace('@','AT') }}</a></td>
+            <td><a href="/public/user/{{ collection.user.id }}">{{ collection.user.email.split('@')[0] }}</a></td>
         </tr>
     {% endfor %}
     </tbody>
