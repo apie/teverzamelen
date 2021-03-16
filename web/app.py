@@ -111,7 +111,7 @@ def index():
 @app.route('/public')
 def public():
     collections = Collection.query.filter_by(public=True)
-    return render_template('public/public_index.html', title='Gedeelde lijstjes', collections=collections)
+    return render_template('public/public_index.html', title='Gedeelde lijstjes', collections=collections, back='/')
 
 @app.route('/public/user/<id_or_email>')
 def public_user(id_or_email):
@@ -119,7 +119,7 @@ def public_user(id_or_email):
     if not user:
         return 'Unknown user', 404
     collections = Collection.query.filter_by(public=True, user=user)
-    return render_template('public/public_index.html', title=f"Gedeelde lijstjes van {user.email.split('@')[0]}", collections=collections)
+    return render_template('public/public_index.html', title=f"Gedeelde lijstjes van {user.email.split('@')[0]}", collections=collections, back='/public')
 
 @app.route('/public/collection/<id>')
 def view_public_collection(id):
