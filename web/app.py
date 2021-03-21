@@ -126,7 +126,7 @@ def view_public_collection(id):
     collection = Collection.query.filter_by(public=True, id=id).first_or_404()
     return render_template(
         'public/view_public_collection.html',
-        title='Bekijk gedeeld lijstje',
+        title=f'Bekijk gedeeld lijstje "{collection.name}" van {collection.user.email.split("@")[0]}',
         collection=collection,
         in_my_collection=False if current_user.is_anonymous else Collection.query.filter_by(user=current_user, name=collection.name).count() > 0,
     )
@@ -160,7 +160,7 @@ def view_collection(id):
         return delete_collection(collection)
     elif request.method == 'PATCH':
         return patch_collection(collection)
-    return render_template('view_collection.html', title='Bewerk lijstje', collection=collection)
+    return render_template('view_collection.html', title=f'Bewerk lijstje "{collection.name}"' , collection=collection)
 
 
 @app.route('/collection/new', methods=['POST'])
