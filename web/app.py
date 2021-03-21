@@ -119,6 +119,9 @@ def public_user(id_or_email):
     if not user:
         return 'Unknown user', 404
     collections = Collection.query.filter_by(public=True, user=user)
+    if not collections.first():
+        # Do not leak information about users if they dont share anything
+        return 'Unknown user', 404
     return render_template('public/public_collection.html', title=f"Gedeelde lijstjes van {user.email.split('@')[0]}", collections=collections)
 
 @app.route('/public/collection/<id>')
