@@ -197,6 +197,8 @@ def new_item():
     collection_id = request.form['collection_id']
     name = request.form['name']
     collection = Collection.query.filter_by(user=current_user, id=collection_id).first()
+    if Item.query.filter_by(name=name, collection=collection).first():
+        return ''
     item = Item(name=name, collection=collection)
     db.session.add(item)
     db.session.commit()
