@@ -7,7 +7,7 @@
     {{title}}
 </h2>
 <p>Hieronder staan alle items in jouw bezit die je nog niet gelezen hebt. Klik op de knop achteraan om iets als gelezen te markeren.</p>
- <input type="text" id="searchInput" onkeyup="searchTable('itemTable')" placeholder="zoeken" class="w3-input w3-theme-d2 w3-round w3-margin-top" autofocus>
+ <input type="search" id="searchInput" onkeyup="searchTable('itemTable')" onsearch="searchTable('itemTable')" placeholder="zoeken" class="w3-input w3-theme-d2 w3-round w3-margin-top" autofocus>
 <table id="itemTable" class="w3-table w3-hoverable">
     <thead>
     <tr>
