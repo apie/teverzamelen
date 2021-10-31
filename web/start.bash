@@ -13,7 +13,7 @@ if [ ! -d "venv" ]; then
   virtualenv --python=python3 venv
 fi
 source venv/bin/activate
-pip3 install pip==21.0.1 pip-tools==5.5.0
+pip3 install pip==21.3.1 pip-tools==6.4.0
 pip-sync
 venv/bin/gunicorn app:app --reload -b localhost:8003
 
