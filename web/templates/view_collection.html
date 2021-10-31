@@ -23,7 +23,7 @@
     </div>
 </div>
 
-<form id="newItemForm" hx-post="/item/new" hx-target="#collection_table_body" hx-swap="afterbegin" class="w3-container w3-hide">
+<form id="newItemForm" hx-post="/item/new" hx-target="#collection_table_body" hx-swap="afterbegin" class="w3-container w3-hide" onsubmit="resetForm()">
     <input type="hidden" name="collection_id" value="{{collection.id}}">
     <input class="w3-round w3-input w3-theme-d2" type="text" name="name" placeholder="Nieuw item" required>
     <input class="w3-round w3-input w3-theme-dark" type="submit" value="Toevoegen">
