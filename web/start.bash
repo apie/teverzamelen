@@ -10,7 +10,7 @@ if [ ! -f 'config.py' ]; then
   exit 1
 fi
 if [ ! -d "venv" ]; then
-  virtualenv --python=python3 venv
+  virtualenv --python=python3.8 venv
 fi
 source venv/bin/activate
 pip3 install pip==21.3.1 pip-tools==6.4.0
