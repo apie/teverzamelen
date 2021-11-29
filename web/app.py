@@ -10,6 +10,7 @@ from flask_security.models import fsqla_v2 as fsqla
 from flask_security import Security
 from flask_login import current_user
 from flask_security import auth_required
+from stripinfo import get_stripinfo_collection_data
 
 import config
 
@@ -166,13 +167,36 @@ def view_collection(id):
     return render_template('view_collection.html', title=f'Bewerk lijstje "{collection.name}"' , collection=collection)
 
 
+def create_stripinfo_collection(name, items):
+    new_collection = Collection(name=name, user=current_user)
+    db.session.add(new_collection)
+    db.session.commit()
+    for item in items:
+        item_i = Item(name=item, collection=new_collection)
+    db.session.commit()
+    return new_collection
+
+def collection_exists(name):
+    return Collection.query.filter_by(user=current_user, name=name).first()
+
+STRIPINFO_URL = 'https://stripinfo.be/reeks/index/'
+
 @app.route('/collection/new', methods=['POST'])
 @auth_required()
 def new_collection():
     name = request.form['name']
-    new_collection = Collection(name=name, user=current_user)
-    db.session.add(new_collection)
-    db.session.commit()
+    if name.startswith(STRIPINFO_URL):
+        data = get_stripinfo_collection_data(name)
+
+        if c := collection_exists(data['name']):
+            return redirect(f'/collection/{c.id}')
+        new_collection = create_stripinfo_collection(data['name'], data['items'])
+    else:
+        if c := collection_exists(name):
+            return redirect(f'/collection/{c.id}')
+        new_collection = Collection(name=name, user=current_user)
+        db.session.add(new_collection)
+        db.session.commit()
     return redirect(f'/collection/{new_collection.id}')
 
 

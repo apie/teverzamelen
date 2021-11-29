@@ -4,7 +4,6 @@
 # License: MIT
 
 from bs4 import BeautifulSoup  # type: ignore
-from tabulate import tabulate
 import requests
 import sys
 
@@ -17,7 +16,7 @@ class Parser:
         self.url = url
         self.session = requests.session()
         self.tdata = []
-        page = self.session.get(self.url)
+        page = self.session.get(self.url, timeout=5)
         soup = BeautifulSoup(page.content, "html.parser")
         self.title = soup.findAll("title")[0].text.split(' - stripinfo.be')[0]
 
@@ -40,6 +39,7 @@ class Parser:
 
 
 if __name__ == "__main__":
+    from tabulate import tabulate
     url = sys.argv[1]
     assert url.startswith(BASE_URL)
     p = Parser(url)
