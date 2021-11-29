@@ -9,6 +9,9 @@ import sys
 
 BASE_URL = 'https://stripinfo.be/reeks/index/'
 FIELDS = ('countcol', 'firstcol')
+SKIP = dict(
+    countcol=('INT', 'S'), #skip integraal and special
+)
 
 
 class Parser:
@@ -25,11 +28,17 @@ class Parser:
         table = tables[0]
         rows = table.findAll("tr")
         for row in rows:
+            skiprow = False
             cells = row.findAll("td")
             data = dict()
             for cell in cells:
+                if skiprow:
+                    continue
                 for field in FIELDS:
                     if cell.attrs['class'][0] == field:
+                        if any(cell.text.startswith(skiptext_for_field) for skiptext_for_field in SKIP.get(field, ())):
+                            skiprow = True
+                            continue
                         data[field] = cell.text.strip()
             if data:
                 self.tdata.append(data)
