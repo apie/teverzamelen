@@ -10,6 +10,7 @@ from flask_security.models import fsqla_v2 as fsqla
 from flask_security import Security
 from flask_login import current_user
 from flask_security import auth_required
+
 from stripinfo import get_stripinfo_collection_data
 
 import config
@@ -71,6 +72,14 @@ class Item(db.Model):
     owned = db.Column(db.Boolean(), default=False)
     want = db.Column(db.Boolean(), default=False)
     read = db.Column(db.Boolean(), default=False)
+    currently_reading = db.relationship("Reading", back_populates="item", uselist=False)
+
+
+class Reading(db.Model):
+    __tablename__ = 'reading'
+    id = db.Column(db.Integer, primary_key=True)
+    item_id = db.Column(db.Integer, db.ForeignKey('item.id'))
+    item = db.relationship("Item", back_populates="currently_reading")
 
 
 # Define models
@@ -228,6 +237,16 @@ def new_item():
     db.session.commit()
     return render_template('partials/item_tr.html', item=item)
 
+@app.route('/item/<id>/reading', methods=['POST'])
+@auth_required()
+def mark_item_currently_reading(id):
+    item = Item.query.filter_by(id=id).first()
+    if item.collection.user != current_user:
+        return 'Unauthorized', 401
+    reading = Reading(item=item)
+    db.session.add(reading)
+    db.session.commit()
+    return render_template('partials/reading_list_item_tr.html', item=item)
 
 @app.route('/item/<id>', methods=['PATCH', 'DELETE'])
 @auth_required()
@@ -249,16 +268,26 @@ def change_item(id):
         Item.query.filter_by(id=id).update({field: newval})
         db.session.commit()
         if request.environ['HTTP_REFERER'].endswith('reading_list'):
-            return '' # Item marked as read. Do not return anything
+            #Marked as read. Remove from 'currently reading'.
+            Reading.query.filter_by(item_id=id).delete()
+            db.session.commit()
+            return '' # Item marked as read. Do not return anything since row disappears from the page.
         return render_template('partials/item_tr.html', item=item)
 
+
+def reading_list_sorter(t):
+    # Put Items that you are currently reading at the top of the list
+    if t.currently_reading:
+        prefix = ''
+    else:
+        prefix = 'z'
+    return prefix + t.collection.name
 
 @app.route('/reading_list')
 @auth_required()
 def reading_list():
-    collections = Collection.query.filter_by(user=current_user)
     to_read = Item.query.filter_by(owned=True, read=False).join(Item.collection).filter_by(user=current_user)
-    return render_template('reading_list.html', title='Leeslijst', to_read=to_read)
+    return render_template('reading_list.html', title='Leeslijst', to_read=sorted(to_read, key=reading_list_sorter))
 
 
 if __name__ == '__main__':
