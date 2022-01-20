@@ -17,7 +17,7 @@
         </button>
     </td>
     <td>
-        <button class="w3-round w3-block w3-border-0 w3-theme-dark w3-hover-red w3-hide delete-item" hx-delete="/item/{{item.id}}" hx-confirm="Weet je het zeker?" hx-target="closest tr" hx-swap="outerHTML swap:1s">
+        <button class="w3-round w3-block w3-border-0 w3-theme-dark w3-hover-red w3-hide delete-item" hx-delete="/item/{{item.id}}" hx-confirm="'{{item.name}}' verwijderen uit lijst?" hx-target="closest tr" hx-swap="outerHTML swap:1s">
             <i class="fa fa-trash"></i>
         </button>
     </td>
