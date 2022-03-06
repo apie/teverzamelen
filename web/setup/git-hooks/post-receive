@@ -1,0 +1,8 @@
+#!/bin/bash
+cd ..
+GIT_DIR='.git'
+umask 002 && git reset --hard
+hash=$(git show -s --format=%H)
+d=$(git show -s --format=%ci)
+echo "Versie website: <a href='https://github.com/apie/teverzamelen/commit/${hash}'>${d}</a>" > web/templates/footer.txt
+sudo systemctl reload teverzamelen
