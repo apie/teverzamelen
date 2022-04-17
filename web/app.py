@@ -60,6 +60,8 @@ class Collection(db.Model):
     user = db.relationship("User", backref=db.backref('collections', lazy='dynamic'))
     name = db.Column(db.String(255))
     public = db.Column(db.Boolean(), default=False)
+    url = db.Column(db.String(255))
+    description = db.Column(db.Text())
 
 
 class Item(db.Model):
@@ -176,19 +178,22 @@ def view_collection(id):
     return render_template('view_collection.html', title=f'Bewerk lijstje "{collection.name}"' , collection=collection)
 
 
-def create_stripinfo_collection(name, items):
-    new_collection = Collection(name=name, user=current_user)
+def create_stripinfo_collection(name, items, url):
+    new_collection = Collection(name=name, user=current_user, url=url, description='Geïmporteerd van stripinfo.')
     db.session.add(new_collection)
     db.session.commit()
     for item in items:
-        item_i = Item(name=item, collection=new_collection)
+        Item(name=item, collection=new_collection)
     db.session.commit()
     return new_collection
+
 
 def collection_exists(name):
     return Collection.query.filter_by(user=current_user, name=name).first()
 
+
 STRIPINFO_URL = 'https://stripinfo.be/reeks/index/'
+
 
 @app.route('/collection/new', methods=['POST'])
 @auth_required()
@@ -199,7 +204,7 @@ def new_collection():
 
         if c := collection_exists(data['name']):
             return redirect(f'/collection/{c.id}')
-        new_collection = create_stripinfo_collection(data['name'], data['items'])
+        new_collection = create_stripinfo_collection(data['name'], data['items'], name)
     else:
         if c := collection_exists(name):
             return redirect(f'/collection/{c.id}')

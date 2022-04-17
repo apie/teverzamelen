@@ -6,6 +6,11 @@
 <h2>
     Bewerk lijstje "{{collection.name}}"
 </h2>
+<h7>
+    {{collection.description or ''}}
+</h7>
+{% if collection.url %}<small><a href="{{collection.url}}">{{collection.url}}</a></small>{% endif %}
+
 <div class="w3-container">
     <div class="w3-small w3-left">
         <button class="w3-round w3-button w3-hover-yellow w3-small" title="Toon formulier voor nieuw item" onClick="document.getElementById('newItemForm').classList.toggle('w3-hide');">
