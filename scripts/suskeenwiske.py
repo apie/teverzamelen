@@ -9,7 +9,7 @@ from util import make_dict
 
 URL = 'https://nl.wikipedia.org/wiki/Vierkleurenreeks'
 HEADER_START = 1
-FIELDS = ('Nummer', 'Titel')
+FIELDS = ('Nr', 'Titel')
 
 
 if __name__ == "__main__":
