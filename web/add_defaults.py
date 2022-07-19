@@ -17,7 +17,7 @@ user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 
 #Create user
 with app.app_context():
-    admin = user_datastore.get_user('admin')
+    admin = user_datastore.find_user(email='admin')
 if not admin:
     admin = user_datastore.create_user(email='admin', password=ADMIN_PASSWORD)
     db.session.commit()
