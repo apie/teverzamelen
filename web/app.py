@@ -3,7 +3,7 @@ import os
 
 import flask
 import flask_sqlalchemy
-from flask import redirect, url_for, request, send_from_directory, render_template, render_template_string, Response
+from flask import redirect, request, send_from_directory, render_template
 from flask_mail import Mail
 from flask_security import SQLAlchemyUserDatastore
 from flask_security.models import fsqla_v2 as fsqla
@@ -125,6 +125,7 @@ def public():
     users = User.query.join(User.collections).filter_by(public=True)
     return render_template('public/public_index.html', title='Gedeelde lijstjes', users=users)
 
+
 @app.route('/public/user/<id_or_email>')
 def public_user(id_or_email):
     user = User.query.filter_by(id=id_or_email).first() or User.query.filter_by(email=id_or_email).first()
@@ -136,6 +137,7 @@ def public_user(id_or_email):
         return 'Unknown user', 404
     return render_template('public/public_collection.html', title=f"Gedeelde lijstjes van {user.email.split('@')[0]}", collections=collections)
 
+
 @app.route('/public/collection/<id>')
 def view_public_collection(id):
     collection = Collection.query.filter_by(public=True, id=id).first_or_404()
@@ -146,12 +148,14 @@ def view_public_collection(id):
         in_my_collection=False if current_user.is_anonymous else Collection.query.filter_by(user=current_user, name=collection.name).count() > 0,
     )
 
+
 def delete_collection(collection):
     # TODO direct teruggaan
     Item.query.filter_by(collection=collection).delete()
     Collection.query.filter_by(id=collection.id).delete()
     db.session.commit()
     return '<a href="/">back</a>'
+
 
 def patch_collection(collection):
     field = request.environ['HTTP_HX_TRIGGER_NAME']
@@ -167,6 +171,7 @@ def patch_collection(collection):
         return render_template('partials/is_public.html', collection=collection)
     return retval
 
+
 @app.route('/collection/<id>', methods=['GET', 'DELETE', 'PATCH'])
 @auth_required()
 def view_collection(id):
@@ -175,7 +180,7 @@ def view_collection(id):
         return delete_collection(collection)
     elif request.method == 'PATCH':
         return patch_collection(collection)
-    return render_template('view_collection.html', title=f'Bewerk lijstje "{collection.name}"' , collection=collection)
+    return render_template('view_collection.html', title=f'Bewerk lijstje "{collection.name}"', collection=collection)
 
 
 def create_stripinfo_collection(name, items, url):
@@ -224,7 +229,7 @@ def copy_collection(id):
     db.session.add(new_collection)
     db.session.commit()
     for i, item in enumerate(collection.items.all()):
-        item_i = Item(name=item.name, collection=new_collection)
+        Item(name=item.name, collection=new_collection)
     db.session.commit()
     return redirect(f'/collection/{new_collection.id}')
 
@@ -242,6 +247,7 @@ def new_item():
     db.session.commit()
     return render_template('partials/item_tr.html', item=item)
 
+
 @app.route('/item/<id>/reading', methods=['POST'])
 @auth_required()
 def mark_item_currently_reading(id):
@@ -252,6 +258,7 @@ def mark_item_currently_reading(id):
     db.session.add(reading)
     db.session.commit()
     return render_template('partials/reading_list_item_tr.html', item=item)
+
 
 @app.route('/item/<id>', methods=['PATCH', 'DELETE'])
 @auth_required()
@@ -273,10 +280,10 @@ def change_item(id):
         Item.query.filter_by(id=id).update({field: newval})
         db.session.commit()
         if request.environ['HTTP_REFERER'].endswith('reading_list'):
-            #Marked as read. Remove from 'currently reading'.
+            # Marked as read. Remove from 'currently reading'.
             Reading.query.filter_by(item_id=id).delete()
             db.session.commit()
-            return '' # Item marked as read. Do not return anything since row disappears from the page.
+            return ''  # Item marked as read. Do not return anything since row disappears from the page.
         return render_template('partials/item_tr.html', item=item)
 
 
@@ -287,6 +294,7 @@ def reading_list_sorter(t):
     else:
         prefix = 'z'
     return prefix + t.collection.name
+
 
 @app.route('/reading_list')
 @auth_required()

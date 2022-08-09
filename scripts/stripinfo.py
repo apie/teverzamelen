@@ -10,7 +10,7 @@ import sys
 BASE_URL = 'https://stripinfo.be/reeks/index/'
 FIELDS = ('countcol', 'firstcol')
 SKIP = dict(
-    countcol=('INT', 'S'), #skip integraal and special
+    countcol=('INT', 'S'),  # skip integraal and special
 )
 
 
@@ -53,4 +53,3 @@ if __name__ == "__main__":
     assert url.startswith(BASE_URL)
     p = Parser(url)
     print(tabulate(p.get_data(), headers='keys', tablefmt='tsv'))
-

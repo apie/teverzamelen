@@ -9,19 +9,19 @@ import csv
 from glob import glob
 from os.path import basename
 from config import ADMIN_PASSWORD
-engine = create_engine('sqlite:///app.sqlite', echo = True)
- 
+engine = create_engine('sqlite:///app.sqlite', echo=True)
+
 db = flask_sqlalchemy.SQLAlchemy(app)
 db.create_all()
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 
-#Create user
+# Create user
 with app.app_context():
     admin = user_datastore.find_user(email='admin')
 if not admin:
     admin = user_datastore.create_user(email='admin', password=ADMIN_PASSWORD)
     db.session.commit()
-#Loop collections
+# Loop collections
 for collection in glob('../scripts/output/*.tsv'):
     with open(f'../scripts/{collection}') as f:
         collection_name = basename(collection).split('.')[0].replace('_', ' ').title()
@@ -29,7 +29,7 @@ for collection in glob('../scripts/output/*.tsv'):
             print(f"{collection_name} exists")
             continue  # exists already
         print(collection_name)
-        #If new collection, add it to the database
+        # If new collection, add it to the database
         c = Collection(name=collection_name, user_id=admin.id, public=True)
         db.session.add(c)
         reader = csv.reader(f, delimiter='\t')
@@ -47,4 +47,3 @@ for collection in glob('../scripts/output/*.tsv'):
                 Item(sequence=sequence, name=name, collection=c)
             )
 db.session.commit()
-
