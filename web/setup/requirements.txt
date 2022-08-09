@@ -4,7 +4,7 @@
 #
 #    pip-compile
 #
-bcrypt==3.2.0
+bcrypt==3.2.2
     # via
     #   -r requirements.in
     #   flask-security-too
@@ -74,8 +74,6 @@ pycparser==2.20
     # via cffi
 requests==2.26.0
     # via -r requirements.in
-six==1.16.0
-    # via bcrypt
 soupsieve==2.3.1
     # via beautifulsoup4
 sqlalchemy==1.4.26
