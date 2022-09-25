@@ -11,7 +11,7 @@ from util import make_dict
 URL = 'https://nl.wikipedia.org/wiki/DirkJan'
 XPATH_EXPR = '//*[@id="Hoofdreeks"]/parent::h3/following-sibling::ul[1]/li'
 ALL_FIELDS = ('Titel', 'Jaar')
-FIELDS = ('Titel')
+FIELDS = ('Titel', )
 
 
 if __name__ == "__main__":
