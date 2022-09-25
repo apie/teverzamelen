@@ -14,7 +14,6 @@ bleach==5.0.1
     # via flask-security-too
 blinker==1.4
     # via
-    #   flask-mail
     #   flask-principal
     #   flask-security-too
 bs4==0.0.1
@@ -34,22 +33,22 @@ email-validator==1.1.3
 flask==2.0.2
     # via
     #   flask-login
-    #   flask-mail
+    #   flask-mailman
     #   flask-principal
     #   flask-security-too
     #   flask-sqlalchemy
     #   flask-wtf
-flask-login==0.5.0
+flask-login==0.6.2
     # via flask-security-too
-flask-mail==0.9.1
+flask-mailman==0.3.0
     # via flask-security-too
 flask-principal==0.4.0
     # via flask-security-too
-flask-security-too[common]==4.1.5
+flask-security-too[common]==5.0.2
     # via -r requirements.in
 flask-sqlalchemy==2.5.1
     # via -r requirements.in
-flask-wtf==0.15.1
+flask-wtf==1.0.1
     # via flask-security-too
 greenlet==1.1.2
     # via sqlalchemy
@@ -70,6 +69,8 @@ markupsafe==2.0.1
     # via
     #   jinja2
     #   wtforms
+mkdocs-material-extensions==1.0.3
+    # via flask-mailman
 passlib==1.7.4
     # via flask-security-too
 pycparser==2.20
@@ -87,9 +88,13 @@ urllib3==1.26.12
 webencodings==0.5.1
     # via bleach
 werkzeug==2.0.2
-    # via flask
-wtforms==2.3.3
-    # via flask-wtf
+    # via
+    #   flask
+    #   flask-login
+wtforms==3.0.1
+    # via
+    #   flask-security-too
+    #   flask-wtf
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools

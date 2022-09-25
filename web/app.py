@@ -4,7 +4,7 @@ import os
 import flask
 import flask_sqlalchemy
 from flask import redirect, request, send_from_directory, render_template
-from flask_mail import Mail
+from flask_mailman import Mail
 from flask_security import SQLAlchemyUserDatastore
 from flask_security.models import fsqla_v2 as fsqla
 from flask_security import Security
