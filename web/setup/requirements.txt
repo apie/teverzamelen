@@ -4,7 +4,7 @@
 #
 #    pip-compile
 #
-bcrypt==4.0.0
+bcrypt==4.0.1
     # via
     #   -r requirements.in
     #   flask-security-too
@@ -56,8 +56,6 @@ idna==3.4
     # via
     #   email-validator
     #   requests
-importlib-metadata==4.12.0
-    # via flask
 itsdangerous==2.1.2
     # via
     #   flask
@@ -94,8 +92,6 @@ wtforms==3.0.1
     # via
     #   flask-security-too
     #   flask-wtf
-zipp==3.8.1
-    # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
