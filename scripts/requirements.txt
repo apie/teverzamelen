@@ -5,20 +5,20 @@
 #    pip-compile
 #
 beautifulsoup4==4.10.0
-    # via -r requirements.in
-certifi==2021.10.8
+    # via -r scripts/requirements.in
+certifi==2022.12.7
     # via requests
 charset-normalizer==2.0.9
     # via requests
 idna==3.3
     # via requests
 lxml==4.9.1
-    # via -r requirements.in
+    # via -r scripts/requirements.in
 requests==2.26.0
-    # via -r requirements.in
+    # via -r scripts/requirements.in
 soupsieve==2.3.1
     # via beautifulsoup4
 tabulate==0.8.9
-    # via -r requirements.in
+    # via -r scripts/requirements.in
 urllib3==1.26.7
     # via requests
