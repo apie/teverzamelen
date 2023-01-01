@@ -97,7 +97,8 @@ class User(db.Model, fsqla.FsUserMixin):
 
 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
-db.create_all()
+with app.app_context():
+    db.create_all()
 security = Security(app, user_datastore)
 
 
