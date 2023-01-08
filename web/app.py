@@ -3,6 +3,7 @@ import os
 
 import flask
 import flask_sqlalchemy
+import datetime
 from flask import redirect, request, send_from_directory, render_template
 from flask_mailman import Mail
 from flask_security import SQLAlchemyUserDatastore
@@ -72,9 +73,13 @@ class Item(db.Model):
     sequence = db.Column(db.Integer)
     name = db.Column(db.String(255))
     owned = db.Column(db.Boolean(), default=False)
+    owned_date = db.Column(db.Date())
     want = db.Column(db.Boolean(), default=False)
+    want_date = db.Column(db.Date())
     read = db.Column(db.Boolean(), default=False)
+    read_date = db.Column(db.Date())
     currently_reading = db.relationship("Reading", back_populates="item", uselist=False)
+
 
 
 class Reading(db.Model):
@@ -276,6 +281,8 @@ def change_item(id):
         val = getattr(item, field)
         if isinstance(val, bool):
             newval = not val
+            if hasattr(item, field+'_date'):
+                Item.query.filter_by(id=id).update({field+'_date': datetime.date.today() if newval else datetime.date.min})
         else:
             raise Exception('Not implemented')
         Item.query.filter_by(id=id).update({field: newval})
