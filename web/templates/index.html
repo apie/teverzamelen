@@ -4,18 +4,24 @@
     Welkom op Teverzamelen.nl!
 </h1>
     {% if current_user.email %}
-        <p>
-            <a href="/public">Gedeelde lijstjes bekijken</a>.
-        </p>
-        <form method="post" action="/collection/new" class="w3-container">
+        <div class="w3-container">
+            <a href="/public">Alle gedeelde lijstjes bekijken</a>.
+        </div>
+        {% if to_read %}
+            <h2>Te lezen</h2>
+            <div class="w3-container">
+                Nog {{ to_read }} te lezen. <a href='/reading_list'>Open de leeslijst.</a>
+            </div>
+        {% endif %}
+        <h2>Jouw lijstjes
+            <button class="w3-round w3-button w3-hover-yellow w3-small" title="Toon formulier voor nieuw item" onClick="document.getElementById('newItemForm').classList.toggle('w3-hide');">
+                <i class="fa fa-plus"></i>
+            </button>
+        </h2>
+        <form id="newItemForm" method="post" action="/collection/new" class="w3-container {% if collections.count() %}w3-hide{% endif %}">
             <input class="w3-round w3-input w3-theme-d2" type="text" placeholder="typ een omschrijving of plak een link naar een reeks op Stripinfo.be" name="name" required>
             <input class="w3-round w3-input w3-theme-dark" type="submit" value="Nieuw lijstje">
         </form>
-        {% if to_read %}
-            <h2>Te lezen</h2>
-            Nog {{ to_read }} te lezen. <a href='/reading_list'>Open de leeslijst.</a>
-        {% endif %}
-        <h2>Jouw lijstjes</h2>
         <table id="my_collections" class="w3-table w3-hoverable">
             <thead>
                 <tr>
