@@ -4,3 +4,4 @@ flask-security-too[common]
 bcrypt
 bs4
 requests
+python-dateutil

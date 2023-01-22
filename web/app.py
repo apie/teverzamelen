@@ -4,6 +4,7 @@ import os
 import flask
 import flask_sqlalchemy
 import datetime
+from dateutil import relativedelta
 from flask import redirect, request, send_from_directory, render_template
 from flask_mailman import Mail
 from flask_security import SQLAlchemyUserDatastore
@@ -11,6 +12,7 @@ from flask_security.models import fsqla_v2 as fsqla
 from flask_security import Security
 from flask_login import current_user
 from flask_security import auth_required
+from sqlalchemy import extract
 
 from stripinfo import get_stripinfo_collection_data
 
@@ -79,7 +81,6 @@ class Item(db.Model):
     read = db.Column(db.Boolean(), default=False)
     read_date = db.Column(db.Date())
     currently_reading = db.relationship("Reading", back_populates="item", uselist=False)
-
 
 
 class Reading(db.Model):
@@ -178,6 +179,31 @@ def patch_collection(collection):
     return retval
 
 
+def get_stats(collection):
+    stats = dict(
+        read=dict(),
+        owned=dict()
+    )
+    today = datetime.date.today()
+    last_month = today - relativedelta.relativedelta(months=1)
+    for t in ('read', 'owned'):
+        stats[t]['this_month'] = Item.query.filter_by(collection=collection).filter(
+            extract('month', getattr(Item, f'{t}_date')) == today.month,
+            extract('year', getattr(Item, f'{t}_date')) == today.year,
+        ).count()
+        stats[t]['this_year'] = Item.query.filter_by(collection=collection).filter(
+            extract('year', getattr(Item, f'{t}_date')) == today.year,
+        ).count()
+        stats[t]['last_month'] = Item.query.filter_by(collection=collection).filter(
+            extract('month', getattr(Item, f'{t}_date')) == last_month.month,
+            extract('year', getattr(Item, f'{t}_date')) == last_month.year,
+        ).count()
+        stats[t]['last_year'] = Item.query.filter_by(collection=collection).filter(
+            extract('year', getattr(Item, f'{t}_date')) == today.year - 1,
+        ).count()
+    return stats
+
+
 @app.route('/collection/<id>', methods=['GET', 'DELETE', 'PATCH'])
 @auth_required()
 def view_collection(id):
@@ -186,7 +212,8 @@ def view_collection(id):
         return delete_collection(collection)
     elif request.method == 'PATCH':
         return patch_collection(collection)
-    return render_template('view_collection.html', title=f'Bewerk lijstje "{collection.name}"', collection=collection)
+    stats = get_stats(collection)
+    return render_template('view_collection.html', title=f'Bewerk lijstje "{collection.name}"', collection=collection, stats=stats)
 
 
 def create_stripinfo_collection(name, items, url):
