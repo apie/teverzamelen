@@ -124,7 +124,8 @@ def index():
     if not current_user.is_anonymous:
         collections = Collection.query.filter_by(user=current_user)
         to_read = Item.query.filter_by(owned=True, read=False).join(Item.collection).filter_by(user=current_user).count()
-    return render_template('index.html', title='Welkom', collections=collections, to_read=to_read)
+        stats = get_stats()
+    return render_template('index.html', title='Welkom', collections=collections, to_read=to_read, stats=stats)
 
 
 @app.route('/public')
@@ -179,7 +180,11 @@ def patch_collection(collection):
     return retval
 
 
-def get_stats(collection):
+def get_stats(collection=None):
+    if collection:
+        items = Item.query.filter_by(collection=collection)
+    else:
+        items = Item.query
     stats = dict(
         read=dict(),
         owned=dict()
@@ -187,18 +192,18 @@ def get_stats(collection):
     today = datetime.date.today()
     last_month = today - relativedelta.relativedelta(months=1)
     for t in ('read', 'owned'):
-        stats[t]['this_month'] = Item.query.filter_by(collection=collection).filter(
+        stats[t]['this_month'] = items.filter(
             extract('month', getattr(Item, f'{t}_date')) == today.month,
             extract('year', getattr(Item, f'{t}_date')) == today.year,
         ).count()
-        stats[t]['this_year'] = Item.query.filter_by(collection=collection).filter(
+        stats[t]['this_year'] = items.filter(
             extract('year', getattr(Item, f'{t}_date')) == today.year,
         ).count()
-        stats[t]['last_month'] = Item.query.filter_by(collection=collection).filter(
+        stats[t]['last_month'] = items.filter(
             extract('month', getattr(Item, f'{t}_date')) == last_month.month,
             extract('year', getattr(Item, f'{t}_date')) == last_month.year,
         ).count()
-        stats[t]['last_year'] = Item.query.filter_by(collection=collection).filter(
+        stats[t]['last_year'] = items.filter(
             extract('year', getattr(Item, f'{t}_date')) == today.year - 1,
         ).count()
     return stats

@@ -17,6 +17,11 @@
             <button class="w3-round w3-button w3-hover-yellow w3-small" title="Toon formulier voor nieuw item" onClick="document.getElementById('newItemForm').classList.toggle('w3-hide');">
                 <i class="fa fa-plus"></i>
             </button>
+            <button class="w3-round w3-button w3-hover-yellow w3-small" title="Toon extra gegevens"
+                onclick="document.getElementById('statsmodal').style.display='block'"
+            >
+                <i class="fa fa-bar-chart"></i>
+            </button>
         </h2>
         <form id="newItemForm" method="post" action="/collection/new" class="w3-container {% if collections.count() %}w3-hide{% endif %}">
             <input class="w3-round w3-input w3-theme-d2" type="text" placeholder="typ een omschrijving of plak een link naar een reeks op Stripinfo.be" name="name" required>
@@ -38,6 +43,7 @@
             {% endfor %}
             </tbody>
         </table>
+        {% include 'partials/statsmodal.html' %}
     {% else %}
         <a href="/login">Log direct in</a> om een eigen lijstje te maken of bekijk de <a href="/public">gedeelde lijstjes</a>!
     {% endif %}
