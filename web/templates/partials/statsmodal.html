@@ -1,0 +1,39 @@
+<div id="statsmodal" class="w3-modal">
+    <div class="w3-modal-content w3-animate-top w3-card-2 w3-theme w3-round-xlarge">
+        <header class="w3-container">
+            <span onclick="document.getElementById('statsmodal').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+        </header>
+        <div class="w3-container">
+            <ul>
+                <li>Gelezen
+                    <ul>
+                        <li>Deze maand: {{stats.read.this_month}} </li>
+                        <li>Dit jaar: {{stats.read.this_year}}</li>
+                        <li>Vorige maand: {{stats.read.last_month}}</li>
+                        <li>Vorig jaar: {{stats.read.last_year}}</li>
+                    </ul>
+                </li>
+                <li>Gekocht
+                    <ul>
+                        <li>Deze maand: {{stats.owned.this_month}}</li>
+                        <li>Dit jaar: {{stats.owned.this_year}}</li>
+                        <li>Vorige maand: {{stats.owned.last_month}}</li>
+                        <li>Vorig jaar: {{stats.owned.last_year}}</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Get the modal
+    var modal = document.getElementById('statsmodal');
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+</script>
