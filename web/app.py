@@ -314,8 +314,8 @@ def change_item(id):
         val = getattr(item, field)
         if isinstance(val, bool):
             newval = not val
-            if hasattr(item, field+'_date'):
-                Item.query.filter_by(id=id).update({field+'_date': datetime.date.today() if newval else datetime.date.min})
+            if hasattr(item, field + '_date'):
+                Item.query.filter_by(id=id).update({field + '_date': datetime.date.today() if newval else datetime.date.min})
         else:
             raise Exception('Not implemented')
         Item.query.filter_by(id=id).update({field: newval})
