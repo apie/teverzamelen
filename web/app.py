@@ -182,10 +182,11 @@ def patch_collection(collection):
 
 
 def get_stats(collection=None):
+    '''Get stats for a collection or all the collections of a user.'''
     if collection:
         items = Item.query.filter_by(collection=collection)
     else:
-        items = Item.query
+        items = Item.query.join(Item.collection).filter_by(user=current_user)
     stats = dict(
         read=dict(),
         owned=dict()
