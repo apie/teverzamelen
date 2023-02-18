@@ -3,7 +3,7 @@
     <td><a href="/collection/{{item.collection_id}}">{{item.collection.name}}</a></td>
     {% if item.currently_reading %}
         <td hx-patch='/item/{{item.id}}' name='read' hx-target="closest tr" hx-swap="outerHTML swap:1s">
-            <button class="w3-round w3-block w3-border-0 {{'w3-green' if item.read else 'w3-theme-dark'}} w3-hover-theme" title="Klik om als gelezen te markeren">
+            <button class="w3-round w3-block w3-border-0 {{'w3-green' if item.read else 'w3-theme-d1'}} w3-hover-theme" title="Klik om als gelezen te markeren">
                 Bezig
             </button>
         </td>
