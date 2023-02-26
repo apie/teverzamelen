@@ -15,7 +15,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for item in all_items %}
+        {% for item in all_items|sort(attribute="collection.name,name") %}
             <tr>
                 <td>{{ item.collection.name }} - {{ item.name }}</td>
             </tr>
