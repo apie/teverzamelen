@@ -144,7 +144,18 @@ def public_user(id_or_email):
     if not collections.first():
         # Do not leak information about users if they dont share anything
         return 'Unknown user', 404
-    return render_template('public/public_collection.html', title=f"Gedeelde lijstjes van {user.email.split('@')[0]}", collections=collections)
+    if 'all' in request.args:
+        all_items = Item.query.filter_by(owned=False).join(Item.collection).filter_by(user=user, public=True)
+        return render_template(
+            'public/public_collection_all.html',
+            title=f"Gedeelde items van {user.email.split('@')[0]}",
+            all_items=all_items,
+        )
+    return render_template(
+        'public/public_collection.html',
+        title=f"Gedeelde lijstjes van {user.email.split('@')[0]}",
+        collections=collections,
+    )
 
 
 @app.route('/public/collection/<id>')
