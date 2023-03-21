@@ -42,7 +42,7 @@ flask-mailman==0.3.0
     # via flask-security-too
 flask-principal==0.4.0
     # via flask-security-too
-flask-security-too[common]==5.0.2
+flask-security-too[common]==5.1.2
     # via -r requirements.in
 flask-sqlalchemy==3.0.2
     # via -r requirements.in
