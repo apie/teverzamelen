@@ -126,7 +126,7 @@ def index():
         collections = Collection.query.filter_by(user=current_user)
         to_read = Item.query.filter_by(owned=True, read=False).join(Item.collection).filter_by(user=current_user).count()
         stats = get_stats()
-    return render_template('index.html', title='Welkom', collections=collections, to_read=to_read, stats=stats)
+    return render_template('index.html', title='', collections=collections, to_read=to_read, stats=stats)
 
 
 @app.route('/public')
