@@ -1,6 +1,6 @@
 {# w3-hover does not support theme. So we defined these colors hardcoded. #}
 <tr class="item-row {{'w3-hide' if item.owned}}">
-    <td>{{item.name}}</td>
+    <td data-sort="{{item.name|sortable}}">{{item.name}}</td>
     <td>
         <div class="w3-round w3-center w3-block w3-border-0 {{'w3-green' if item.owned else 'w3-theme-dark'}}">
             {{'Ja' if item.owned else 'Nee'}}

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+import re
 
 import flask
 import flask_sqlalchemy
@@ -354,6 +355,23 @@ def reading_list_sorter(t):
 def reading_list():
     to_read = Item.query.filter_by(owned=True, read=False).join(Item.collection).filter_by(user=current_user)
     return render_template('reading_list.html', title='Leeslijst', to_read=sorted(to_read, key=reading_list_sorter))
+
+
+def pad_number(match):
+    # https://stackoverflow.com/questions/56723186/adding-leading-zero-with-regular-expression/56723200#56723200
+    number = int(match.group(1))
+    return format(number, "04d")
+
+
+# #### custom jinja filters
+
+
+@app.template_filter("sortable")
+def sortable_str(string):
+    return re.sub(r"(\d+)", pad_number, string)
+
+
+# ###
 
 
 if __name__ == '__main__':
