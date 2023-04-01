@@ -1,8 +1,27 @@
 body {
-    max-width: 60vw;
+  max-width: 60vw;
 }
 tr.htmx-swapping td {
-    opacity: 0;
-    transition: opacity 1s ease-out;
-  }
-html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
+  opacity: 0;
+  transition: opacity 1s ease-out;
+}
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Roboto", sans-serif;
+}
+
+.sortable th {
+  cursor: pointer;
+}
+.sortable th.dir-d::after {
+  content: "▾";
+}
+.sortable th.dir-u::after {
+  content: "▴";
+}

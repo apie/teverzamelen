@@ -16,11 +16,33 @@
     {% endblock styles %}
     {% block javascript %}
         <script src="https://unpkg.com/htmx.org@0.3.0"></script>
+        <script src="https://cdn.jsdelivr.net/gh/tofsjonas/sortable@latest/sortable.min.js"></script>
         <script src="/static/searchtable.js"></script>
         <script>
             resetForm = function() {
                 setTimeout(function(){document.getElementsByTagName('form')[0].reset()}, 200)
             }
+            window.addEventListener('load', function () {
+                const sortableTables = document.getElementsByClassName('sortable');
+                if (sortableTables.length > 0) {
+                    //save sort state to localstorage on click (invert direction since sort is not yet applied)
+                    sortableTables[0].tHead.addEventListener('click', function(e) {
+                        window.localStorage.setItem(
+                            window.location.pathname,
+                            e.target.cellIndex+' '+(e.target.className === "dir-d" ? "a":"d")
+                        )
+                    })
+
+                    //sorting on load
+                    const savedSortState = window.localStorage.getItem(window.location.pathname);
+                    if (!savedSortState) return;
+                    const [cellIndex, direction] = savedSortState.split(' ');
+                    // click it to sort desc
+                    sortableTables[0].tHead.children[0].children[cellIndex].click();
+                    // click again to sort asc
+                    if (direction === 'a') sortableTables[0].tHead.children[0].children[cellIndex].click();
+                }
+            })
         </script>
     {% endblock javascript %}
 </head>
