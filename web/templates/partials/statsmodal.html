@@ -4,24 +4,27 @@
             <span onclick="document.getElementById('statsmodal').style.display='none'" class="w3-button w3-display-topright">&times;</span>
         </header>
         <div class="w3-container">
-            <ul>
-                <li>Gelezen
-                    <ul>
-                        <li>Deze maand: {{stats.read.this_month}} </li>
-                        <li>Dit jaar: {{stats.read.this_year}}</li>
-                        <li>Vorige maand: {{stats.read.last_month}}</li>
-                        <li>Vorig jaar: {{stats.read.last_year}}</li>
-                    </ul>
-                </li>
-                <li>Gekocht
-                    <ul>
-                        <li>Deze maand: {{stats.owned.this_month}}</li>
-                        <li>Dit jaar: {{stats.owned.this_year}}</li>
-                        <li>Vorige maand: {{stats.owned.last_month}}</li>
-                        <li>Vorig jaar: {{stats.owned.last_year}}</li>
-                    </ul>
-                </li>
-            </ul>
+            {% for k, stat in stats.items() %}
+                <h3>{{ k == 'all' and 'Statistieken' or k == 'ex_tijdschriften' and 'Zonder tijdschriften' }}:</h3>
+                <ul>
+                    <li>Gelezen
+                        <ul>
+                            <li>Deze maand: {{stat.read.this_month}} </li>
+                            <li>Dit jaar: {{stat.read.this_year}}</li>
+                            <li>Vorige maand: {{stat.read.last_month}}</li>
+                            <li>Vorig jaar: {{stat.read.last_year}}</li>
+                        </ul>
+                    </li>
+                    <li>Gekocht
+                        <ul>
+                            <li>Deze maand: {{stat.owned.this_month}}</li>
+                            <li>Dit jaar: {{stat.owned.this_year}}</li>
+                            <li>Vorige maand: {{stat.owned.last_month}}</li>
+                            <li>Vorig jaar: {{stat.owned.last_year}}</li>
+                        </ul>
+                    </li>
+                </ul>
+            {% endfor %}
         </div>
     </div>
 </div>

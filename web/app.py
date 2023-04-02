@@ -126,7 +126,12 @@ def index():
     if not current_user.is_anonymous:
         collections = Collection.query.filter_by(user=current_user)
         to_read = Item.query.filter_by(owned=True, read=False).join(Item.collection).filter_by(user=current_user).count()
-        stats = get_stats()
+        stats = dict(
+            all=get_stats(),
+        )
+        tijdschriften = Collection.query.filter_by(user=current_user, name='Tijdschriften').first()
+        if tijdschriften:
+            stats['ex_tijdschriften'] = get_stats(exclude=tijdschriften.name)
     return render_template('index.html', title='', collections=collections, to_read=to_read, stats=stats)
 
 
@@ -193,12 +198,14 @@ def patch_collection(collection):
     return retval
 
 
-def get_stats(collection=None):
+def get_stats(collection=None, exclude=None):
     '''Get stats for a collection or all the collections of a user.'''
     if collection:
         items = Item.query.filter_by(collection=collection)
     else:
         items = Item.query.join(Item.collection).filter_by(user=current_user)
+    if exclude:
+        items = items.filter(Collection.name != exclude)
     stats = dict(
         read=dict(),
         owned=dict()
@@ -231,7 +238,7 @@ def view_collection(id):
         return delete_collection(collection)
     elif request.method == 'PATCH':
         return patch_collection(collection)
-    stats = get_stats(collection)
+    stats = dict(all=get_stats(collection))
     return render_template('view_collection.html', title=f'Bewerk lijstje "{collection.name}"', collection=collection, stats=stats)
 
 
