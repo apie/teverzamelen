@@ -1,5 +1,5 @@
 <tr>
-    <td>{{item.name|sortable}}</td>
+    <td data-sort="{{item.name|sortable}}">{{item.name}}</td>
     <td><a href="/collection/{{item.collection_id}}">{{item.collection.name}}</a></td>
     {% if item.currently_reading %}
         <td hx-patch='/item/{{item.id}}' name='read' hx-target="closest tr" hx-swap="outerHTML swap:1s">
