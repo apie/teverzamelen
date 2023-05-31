@@ -247,7 +247,7 @@ def create_stripinfo_collection(name, items, url):
     db.session.add(new_collection)
     db.session.commit()
     for item in items:
-        Item(name=item, collection=new_collection)
+        db.session.add(Item(name=item, collection=new_collection))
     db.session.commit()
     return new_collection
 
