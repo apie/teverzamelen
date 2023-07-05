@@ -151,7 +151,7 @@ def public_user(id_or_email):
         # Do not leak information about users if they dont share anything
         return 'Unknown user', 404
     if 'all' in request.args:
-        all_items = Item.query.filter_by(owned=False).join(Item.collection).filter_by(user=user, public=True)
+        all_items = Item.query.filter_by(owned=False, read=False).join(Item.collection).filter_by(user=user, public=True)
         return render_template(
             'public/public_collection_all.html',
             title=f"Gedeelde items van {user.email.split('@')[0]}",
