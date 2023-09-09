@@ -42,6 +42,8 @@ class Parser:
         assert articles, "No articles found. Stop."
         for article in articles:  # type: element.Tag
             a = article.find("a")
+            if 'Retro ' in a.get('title'):
+                continue  # Skip retro
             #print(a.get('title'))
             collection_str = article.find("div", {"class": "collection-name"}).text.strip()
             yield collection_str, int(self._get_number(a.get('href'))), a.get('title')
