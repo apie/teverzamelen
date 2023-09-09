@@ -17,14 +17,19 @@ class Parser:
         self.url = url
         self.session = requests.session()
         self.page = 0
+        self.headers = {
+            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:95.0) Gecko/20100101 Firefox/95.0',
+        }
 
     def _get_number(self, url: str) -> str:
-        page = self.session.get(url)
+        page = self.session.get(url, headers=self.headers)
+        page.raise_for_status()
         soup = BeautifulSoup(page.content, "html.parser")
         return soup.find("div", {"class": "number"}).text.strip()
 
     def _parse_articles(self) -> Iterator[Tuple[str, int, str]]:
-        page = self.session.get(f"{self.url}?sf_paged={self.page}")
+        page = self.session.get(f"{self.url}?sf_paged={self.page}", headers=self.headers)
+        page.raise_for_status()
         soup = BeautifulSoup(page.content, "html.parser")
         articles = soup.findAll("article", {"class": "archive-product"})
         assert articles, "No articles found. Stop."
