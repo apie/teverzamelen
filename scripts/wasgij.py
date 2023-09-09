@@ -7,6 +7,8 @@ from typing import Tuple, Iterator
 
 from bs4 import BeautifulSoup, element  # type: ignore
 import requests
+from requests_cache import NEVER_EXPIRE, CachedSession
+
 from tabulate import tabulate
 
 URL = 'https://wasgij.com/puzzles/'
@@ -15,7 +17,11 @@ URL = 'https://wasgij.com/puzzles/'
 class Parser:
     def __init__(self, url: str):
         self.url = url
-        self.session = requests.session()
+        urls_expire_after = {
+            URL+'?sf_paged=*': 600,
+            '*': NEVER_EXPIRE,
+        }
+        self.session = CachedSession('wasgij_cache', urls_expire_after=urls_expire_after)
         self.page = 0
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:95.0) Gecko/20100101 Firefox/95.0',
@@ -30,11 +36,13 @@ class Parser:
     def _parse_articles(self) -> Iterator[Tuple[str, int, str]]:
         page = self.session.get(f"{self.url}?sf_paged={self.page}", headers=self.headers)
         page.raise_for_status()
+        #print(page.url, page.from_cache)
         soup = BeautifulSoup(page.content, "html.parser")
         articles = soup.findAll("article", {"class": "archive-product"})
         assert articles, "No articles found. Stop."
         for article in articles:  # type: element.Tag
             a = article.find("a")
+            #print(a.get('title'))
             collection_str = article.find("div", {"class": "collection-name"}).text.strip()
             yield collection_str, int(self._get_number(a.get('href'))), a.get('title')
 
