@@ -288,7 +288,7 @@ def copy_collection(id):
     db.session.add(new_collection)
     db.session.commit()
     for i, item in enumerate(collection.items.all()):
-        Item(name=item.name, collection=new_collection)
+        db.session.add(Item(name=item.name, collection=new_collection))
     db.session.commit()
     return redirect(f'/collection/{new_collection.id}')
 
