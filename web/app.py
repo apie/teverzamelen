@@ -6,7 +6,7 @@ import flask
 import flask_sqlalchemy
 import datetime
 from dateutil import relativedelta
-from flask import redirect, request, send_from_directory, render_template
+from flask import redirect, request, send_from_directory, render_template, Response
 from flask_mailman import Mail
 from flask_security import SQLAlchemyUserDatastore
 from flask_security.models import fsqla_v2 as fsqla
@@ -284,13 +284,17 @@ def copy_collection(id):
     # Copy the collection and all the items in it.
     # Only copy names. Not owned/read attributes.
     collection = Collection.query.filter_by(public=True, id=id).first_or_404()
-    new_collection = Collection(name=collection.name, user=current_user)
+    new_collection = collection_exists(collection.name) or Collection(name=collection.name, user=current_user)
     db.session.add(new_collection)
     db.session.commit()
+    current_item_names = {item.name for item in Item.query.filter_by(collection=new_collection)}
     for i, item in enumerate(collection.items.all()):
-        db.session.add(Item(name=item.name, collection=new_collection))
+        if item.name not in current_item_names:
+            db.session.add(Item(name=item.name, collection=new_collection))
     db.session.commit()
-    return redirect(f'/collection/{new_collection.id}')
+    response = Response('')
+    response.headers["HX-Redirect"] = f'/collection/{new_collection.id}'
+    return response
 
 
 @app.route('/item/new', methods=['POST'])
