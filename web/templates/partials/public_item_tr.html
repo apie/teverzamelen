@@ -7,4 +7,9 @@
             {{ ' maar al gelezen' if item.read and not item.owned else '' }}
         </div>
     </td>
+    <td>
+        <div class="w3-round w3-center w3-block w3-border-0 {{'w3-green' if item.want else 'w3-theme-dark'}}">
+            {{'Ja' if item.want else 'Nee'}}
+        </div>
+    </td>
 </tr>
