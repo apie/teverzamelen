@@ -56,8 +56,6 @@ idna==3.4
     # via
     #   email-validator
     #   requests
-importlib-metadata==6.8.0
-    # via flask
 importlib-resources==6.0.1
     # via flask-security-too
 itsdangerous==2.1.2
@@ -95,7 +93,7 @@ urllib3==2.0.4
     # via requests
 webencodings==0.5.1
     # via bleach
-werkzeug==2.3.7
+werkzeug==3.0.1
     # via
     #   flask
     #   flask-login
@@ -103,7 +101,3 @@ wtforms==3.0.1
     # via
     #   flask-security-too
     #   flask-wtf
-zipp==3.16.2
-    # via
-    #   importlib-metadata
-    #   importlib-resources
