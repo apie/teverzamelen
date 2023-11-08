@@ -122,6 +122,7 @@ def send_static(path):
 @app.route('/')
 def index():
     collections = to_read = ()
+    busy_reading = 0
     stats = dict()
     if not current_user.is_anonymous:
         collections = Collection.query.filter_by(user=current_user)
