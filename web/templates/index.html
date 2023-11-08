@@ -10,7 +10,7 @@
         {% if to_read %}
             <h2>Te lezen</h2>
             <div class="w3-container">
-                Nog {{ to_read }} te lezen. <a href='/reading_list'>Open de leeslijst.</a>
+                Nog {{ to_read }} te lezen{% if busy_reading %} ({{ busy_reading}} bezig){% endif %}. <a href='/reading_list'>Open de leeslijst.</a>
             </div>
         {% endif %}
         <h2>Jouw lijstjes

@@ -126,13 +126,14 @@ def index():
     if not current_user.is_anonymous:
         collections = Collection.query.filter_by(user=current_user)
         to_read = Item.query.filter_by(owned=True, read=False).join(Item.collection).filter_by(user=current_user).count()
+        busy_reading = Item.query.join(Item.collection).filter_by(user=current_user).join(Item.currently_reading).count()
         stats = dict(
             all=get_stats(),
         )
         tijdschriften = Collection.query.filter_by(user=current_user, name='Tijdschriften').first()
         if tijdschriften:
             stats['ex_tijdschriften'] = get_stats(exclude=tijdschriften.name)
-    return render_template('index.html', title='', collections=collections, to_read=to_read, stats=stats)
+    return render_template('index.html', title='', collections=collections, to_read=to_read, busy_reading=busy_reading, stats=stats)
 
 
 @app.route('/public')
