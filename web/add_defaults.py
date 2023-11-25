@@ -26,7 +26,7 @@ with app.app_context():
         admin = user_datastore.create_user(email='admin', password=ADMIN_PASSWORD)
     admin_role = user_datastore.find_role('admin')
     if not admin_role:
-        admin_role = user_datastore.create_role('admin')
+        admin_role = user_datastore.create_role(name='admin')
         user_datastore.add_role_to_user(admin, admin_role)
     db.session.commit()
 
