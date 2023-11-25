@@ -370,6 +370,10 @@ def reading_list():
     return render_template('reading_list.html', title='Leeslijst', to_read=sorted(to_read, key=reading_list_sorter))
 
 
+from admin import list_users_view
+
+# ###
+
 def pad_number(match):
     # https://stackoverflow.com/questions/56723186/adding-leading-zero-with-regular-expression/56723200#56723200
     number = int(match.group(1))

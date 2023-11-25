@@ -22,11 +22,15 @@ user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 # Create user
 with app.app_context():
     admin = user_datastore.find_user(email='admin')
-if not admin:
-    admin = user_datastore.create_user(email='admin', password=ADMIN_PASSWORD)
+    if not admin:
+        admin = user_datastore.create_user(email='admin', password=ADMIN_PASSWORD)
+    admin_role = user_datastore.find_role('admin')
+    if not admin_role:
+        admin_role = user_datastore.create_role('admin')
+        user_datastore.add_role_to_user(admin, admin_role)
     db.session.commit()
-# Loop collections
-with app.app_context():
+
+    # Loop collections
     for collection in glob('../scripts/output/*.tsv'):
         with open(f'../scripts/{collection}') as f:
             collection_name = basename(collection).split('.')[0].replace('_', ' ').title()
