@@ -15,7 +15,11 @@
 {% endif %}
 <p id='show-all-paragraph'>
     Hieronder zie je de ongelezen items die nog ontbreken in de verzameling.
-    <a href="#" onClick="[].forEach.call(document.getElementsByClassName('item-row'), (el) => el.classList.remove('w3-hide'));document.getElementById('show-all-paragraph').remove()">Toon alles</a>.
+    <a href="#" onClick="[].forEach.call(document.getElementsByClassName('item-row'), (el) => el.classList.remove('w3-hide'));document.getElementById('show-all-paragraph').remove();document.getElementById('show-only-missing').classList.remove('w3-hide');">Toon alles</a>.
+</p>
+<p id='show-only-missing' class="w3-hide">
+    Hieronder zie je alle items van de verzameling.
+    <a href="#" onClick="window.location.reload();">Toon alleen ontbrekend</a>.
 </p>
 <!-- type='search' adds a clear button (small x) on chrome. clicking the button triggers onsearch event -->
  <input type="search" id="searchInput" onkeyup="searchTable('collectionTable')" onsearch="searchTable('collectionTable')" placeholder="zoeken" class="w3-input w3-theme-d2 w3-round w3-margin-top" autofocus>
