@@ -16,7 +16,7 @@ blinker==1.7.0
     # via
     #   flask
     #   flask-principal
-bs4==0.0.1
+bs4==0.0.2
     # via -r requirements.in
 certifi==2023.11.17
     # via requests
