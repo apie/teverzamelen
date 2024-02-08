@@ -49,7 +49,7 @@ class Parser:
 
 if __name__ == "__main__":
     from tabulate import tabulate
-    url = sys.argv[1]
+    url = sys.argv[1].replace('www.', '')
     assert url.startswith(BASE_URL)
     p = Parser(url)
     print(tabulate(p.get_data(), headers='keys', tablefmt='tsv'))

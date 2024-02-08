@@ -265,7 +265,7 @@ STRIPINFO_URL = 'https://stripinfo.be/reeks/index/'
 @auth_required()
 def new_collection():
     name = request.form['name']
-    if name.startswith(STRIPINFO_URL):
+    if name.replace('www.', '').startswith(STRIPINFO_URL):
         data = get_stripinfo_collection_data(name)
 
         if c := collection_exists(data['name']):
