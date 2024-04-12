@@ -18,7 +18,7 @@ charset-normalizer==3.3.2
     # via requests
 exceptiongroup==1.2.0
     # via cattrs
-idna==3.6
+idna==3.7
     # via requests
 lxml==4.9.3
     # via -r requirements.in
