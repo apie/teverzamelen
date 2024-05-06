@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block body %}
+<a class="w3-round w3-btn w3-theme-dark" href="/">
+    <i class="fa fa-arrow-left"></i> Terug
+</a>
+<h2>
+    {{title}}
+</h2>
+<p><i>Teverzamelen</i> bevat een API. Alle gebruikers krijgen een API key die ze kunnen gebruiken om de API te bevragen. Hiermee is programmatisch informatie van de eigen account uit <i>Teverzamelen</i> op te halen.</p>
+{% if current_user.email %}
+    {% if api_key %}
+        <p>Hieronder staat je API key.</p>
+        <span id="api_key">
+            {{ api_key }}
+        </span>
+        <p>Wil je API-toegang uitschakelen? Verwijder dan de key.</p>
+        <button hx-delete="/api" hx-target="body" class="w3-round w3-btn w3-red">
+            Key verwijderen
+        </button>
+    {% else %}
+        <p id="api_key">Je hebt nog geen API key. </p>
+    {% endif %}
+    <p>Klik hier om een nieuwe API key te genereren.{% if api_key %} Je kunt de oude dan niet meer gebruiken.{% endif %}</p>
+    <button hx-post="/api" hx-target="body" class="w3-round w3-btn w3-brown">
+        Nieuwe key genereren
+    </button>
+{% else %}
+    Maak een account aan en log in om gebruik te kunnen maken van de API.
+{% endif %}
+<h3>Endpoints</h3>
+<ul>
+    <li><a href="api/reading_list?key={{ api_key }}">reading_list</a></li>
+</ul>
+{% endblock body %}

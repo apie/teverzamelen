@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import re
+import uuid
 
 import flask
 import flask_sqlalchemy
@@ -89,6 +90,13 @@ class Reading(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     item_id = db.Column(db.Integer, db.ForeignKey('item.id'))
     item = db.relationship("Item", back_populates="currently_reading")
+
+
+class APIKey(db.Model):
+    __tablename__ = 'apikey'
+    key = db.Column(db.String, primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship("User", backref=db.backref('apikeys', lazy='dynamic'))
 
 
 # Define models
@@ -370,9 +378,11 @@ def reading_list():
     return render_template('reading_list.html', title='Leeslijst', to_read=sorted(to_read, key=reading_list_sorter))
 
 
-from admin import list_users_view
+import api  # noqa
+from admin import list_users_view  # noqa
 
 # ###
+
 
 def pad_number(match):
     # https://stackoverflow.com/questions/56723186/adding-leading-zero-with-regular-expression/56723200#56723200
