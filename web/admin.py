@@ -1,6 +1,5 @@
 from app import app, User
 from flask_security import roles_required
-from flask_login import current_user
 
 
 @app.route('/admin/list_users')
