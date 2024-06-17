@@ -9,7 +9,7 @@ attrs==23.1.0
     #   cattrs
     #   requests-cache
 beautifulsoup4==4.12.2
-    # via -r requirements.in
+    # via -r scripts/requirements.in
 cattrs==23.2.2
     # via requests-cache
 certifi==2023.11.17
@@ -21,26 +21,26 @@ exceptiongroup==1.2.0
 idna==3.6
     # via requests
 lxml==4.9.3
-    # via -r requirements.in
+    # via -r scripts/requirements.in
 platformdirs==4.0.0
     # via requests-cache
 requests==2.31.0
     # via
-    #   -r requirements.in
+    #   -r scripts/requirements.in
     #   requests-cache
 requests-cache==1.1.1
-    # via -r requirements.in
+    # via -r scripts/requirements.in
 six==1.16.0
     # via url-normalize
 soupsieve==2.5
     # via beautifulsoup4
 tabulate==0.9.0
-    # via -r requirements.in
+    # via -r scripts/requirements.in
 typing-extensions==4.8.0
     # via cattrs
 url-normalize==1.4.3
     # via requests-cache
-urllib3==2.1.0
+urllib3==2.2.2
     # via
     #   requests
     #   requests-cache
