@@ -102,7 +102,7 @@ wtforms==3.1.2
     # via
     #   flask-security-too
     #   flask-wtf
-zipp==3.18.1
+zipp==3.19.1
     # via
     #   importlib-metadata
     #   importlib-resources
