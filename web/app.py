@@ -141,7 +141,8 @@ def index():
         )
         if tijdschriften := Collection.query.filter_by(user=current_user, name='Tijdschriften').first():
             stats['ex_tijdschriften'] = get_stats(exclude=tijdschriften.name)
-    return render_template('index.html', title='', collections=collections, to_read=to_read, busy_reading=busy_reading, stats=stats)
+        recent_items = get_recent_items(current_user)
+    return render_template('index.html', title='', collections=collections, to_read=to_read, busy_reading=busy_reading, stats=stats, recent_items=recent_items)
 
 
 @app.route('/public')
@@ -237,6 +238,23 @@ def get_stats(collection=None, exclude=None):
             extract('year', getattr(Item, f'{t}_date')) == today.year - 1,
         ).count()
     return stats
+
+
+def get_recent_items(user):
+    today = datetime.date.today()
+    last_month = today - relativedelta.relativedelta(months=1)
+    recent_items = []
+    items = Item.query.filter_by(owned=True).filter(Item.owned_date >= last_month).order_by(Item.owned_date.desc()).join(Item.collection).filter_by(user=user)[:5]
+    recent_items += [
+        f"{i.owned_date}: {i.name} gekocht"
+        for i in items
+    ]
+    items = Item.query.filter_by(read=True).filter(Item.read_date >= last_month).order_by(Item.read_date.desc()).join(Item.collection).filter_by(user=user)[:5]
+    recent_items += [
+        f"{i.read_date}: {i.name} gelezen"
+        for i in items
+    ]
+    return sorted(recent_items)
 
 
 @app.route('/collection/<id>', methods=['GET', 'DELETE', 'PATCH'])

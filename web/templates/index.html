@@ -13,6 +13,16 @@
                 Nog {{ to_read }} te lezen{% if busy_reading %} ({{ busy_reading}} bezig){% endif %}. <a href='/reading_list'>Open de leeslijst.</a>
             </div>
         {% endif %}
+        {% if recent_items %}
+            <h2>Recent</h2>
+            <div class="w3-container">
+                <ul>
+                    {% for recent_item in recent_items %}
+                        <li>{{ recent_item }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
         <h2>Jouw lijstjes
             <button class="w3-round w3-button w3-hover-yellow w3-small" title="Toon formulier voor nieuw item" onClick="document.getElementById('newItemForm').classList.toggle('w3-hide');">
                 <i class="fa fa-plus"></i>
