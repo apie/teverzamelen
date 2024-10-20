@@ -254,7 +254,7 @@ def get_recent_items(user):
         f"{i.read_date}: {i.name} gelezen"
         for i in items
     ]
-    return sorted(recent_items)
+    return sorted(recent_items, reverse=True)
 
 
 @app.route('/collection/<id>', methods=['GET', 'DELETE', 'PATCH'])
