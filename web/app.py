@@ -139,8 +139,7 @@ def index():
         stats = dict(
             all=get_stats(),
         )
-        tijdschriften = Collection.query.filter_by(user=current_user, name='Tijdschriften').first()
-        if tijdschriften:
+        if tijdschriften := Collection.query.filter_by(user=current_user, name='Tijdschriften').first():
             stats['ex_tijdschriften'] = get_stats(exclude=tijdschriften.name)
     return render_template('index.html', title='', collections=collections, to_read=to_read, busy_reading=busy_reading, stats=stats)
 
