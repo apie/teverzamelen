@@ -132,6 +132,7 @@ def index():
     collections = to_read = ()
     busy_reading = 0
     stats = dict()
+    recent_items = None
     if not current_user.is_anonymous:
         collections = Collection.query.filter_by(user=current_user)
         to_read = Item.query.filter_by(owned=True, read=False).join(Item.collection).filter_by(user=current_user).count()
