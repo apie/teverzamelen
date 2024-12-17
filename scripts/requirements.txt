@@ -12,7 +12,7 @@ attrs==23.1.0
     #   requests-cache
 beautifulsoup4==4.12.2
     # via
-    #   -r requirements.in
+    #   -r scripts/requirements.in
     #   bs4
 bs4==0.0.2
     # via requests-html
@@ -30,7 +30,7 @@ exceptiongroup==1.2.0
     # via cattrs
 fake-useragent==1.5.1
     # via requests-html
-idna==3.6
+idna==3.7
     # via requests
 importlib-metadata==8.5.0
     # via pyppeteer
@@ -38,7 +38,7 @@ importlib-resources==6.4.5
     # via fake-useragent
 lxml==4.9.3
     # via
-    #   -r requirements.in
+    #   -r scripts/requirements.in
     #   pyquery
 parse==1.20.2
     # via requests-html
@@ -52,19 +52,19 @@ pyquery==2.0.1
     # via requests-html
 requests==2.31.0
     # via
-    #   -r requirements.in
+    #   -r scripts/requirements.in
     #   requests-cache
     #   requests-html
 requests-cache==1.1.1
-    # via -r requirements.in
+    # via -r scripts/requirements.in
 requests-html==0.10.0
-    # via -r requirements.in
+    # via -r scripts/requirements.in
 six==1.16.0
     # via url-normalize
 soupsieve==2.5
     # via beautifulsoup4
 tabulate==0.9.0
-    # via -r requirements.in
+    # via -r scripts/requirements.in
 tqdm==4.66.5
     # via pyppeteer
 typing-extensions==4.8.0
