@@ -50,7 +50,7 @@ flask-wtf==1.2.1
     # via flask-security-too
 greenlet==3.0.3
     # via sqlalchemy
-gunicorn==21.2.0
+gunicorn==23.0.0
     # via -r requirements.in
 idna==3.7
     # via
