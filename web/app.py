@@ -187,11 +187,12 @@ def view_public_collection(id):
 
 
 def delete_collection(collection):
-    # TODO direct teruggaan
     Item.query.filter_by(collection=collection).delete()
     Collection.query.filter_by(id=collection.id).delete()
     db.session.commit()
-    return '<a href="/">back</a>'
+    response = Response('')
+    response.headers["HX-Redirect"] = '/'
+    return response
 
 
 def patch_collection(collection):
