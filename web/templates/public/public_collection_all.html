@@ -17,7 +17,7 @@
     <tbody>
         {% for item in all_items|sort(attribute="collection.name,name") %}
             <tr>
-                <td>{{ item.collection.name }} - {{ item.name }}</td>
+                <td data-sort="{{ item.collection.name }} - {{item.name|sortable}}">{{ item.collection.name }} - {{ item.name }}</td>
             </tr>
         {% endfor %}
     </tbody>
