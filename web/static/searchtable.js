@@ -1,4 +1,7 @@
 function searchTable(tableId) {
+  /*
+  * Filter a table based on the value of searchInput. Filters only based on the text of the first column.
+  */
   // Declare variables
   var input, filter, table, tr, td, i, txtValue;
   input = document.getElementById("searchInput");
