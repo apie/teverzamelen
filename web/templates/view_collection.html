@@ -63,5 +63,7 @@
     <i class="fa fa-arrow-up"></i> Naar boven
 </a>
 
+{% with done_term=collection.done_term %}
 {% include 'partials/statsmodal.html' %}
+{% endwith %}
 {% endblock body %}

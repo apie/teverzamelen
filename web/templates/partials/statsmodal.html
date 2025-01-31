@@ -7,7 +7,7 @@
             {% for k, stat in stats.items() %}
                 <h3>{{ k == 'all' and 'Statistieken' or k == 'ex_tijdschriften' and 'Zonder tijdschriften' }}:</h3>
                 <ul>
-                    <li>Gelezen
+                    <li>{{ done_term|default('gelezen')|capitalize }}
                         <ul>
                             <li>Deze maand: {{stat.read.this_month}} </li>
                             <li>Dit jaar: {{stat.read.this_year}}</li>
