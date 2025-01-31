@@ -67,6 +67,7 @@ class Collection(db.Model):
     public = db.Column(db.Boolean(), default=False)
     url = db.Column(db.String(255))
     description = db.Column(db.Text())
+    done_term = db.Column(db.String(255), default='gelezen')
 
 
 class Item(db.Model):
