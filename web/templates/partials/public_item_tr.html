@@ -4,7 +4,7 @@
     <td>
         <div class="w3-round w3-center w3-block w3-border-0 {{'w3-green' if item.owned else 'w3-theme-dark'}}">
             {{'Ja' if item.owned else 'Nee'}}
-            {{ ' maar al gelezen' if item.read and not item.owned else '' }}
+            {{ ' maar al '+ item.collection.done_term if item.read and not item.owned else '' }}
         </div>
     </td>
     <td>

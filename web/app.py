@@ -254,7 +254,7 @@ def get_recent_items(user):
     ]
     items = Item.query.filter_by(read=True).filter(Item.read_date >= last_month).order_by(Item.read_date.desc()).join(Item.collection).filter_by(user=user)[:5]
     recent_items += [
-        f"{i.read_date}: {i.name} gelezen"
+        f"{i.read_date}: {i.name} {i.collection.done_term}"
         for i in items
     ]
     return sorted(recent_items, reverse=True)

@@ -14,7 +14,7 @@
     </button>
 {% endif %}
 <p id='show-all-paragraph'>
-    Hieronder zie je de ongelezen items die nog ontbreken in de verzameling.
+    Hieronder zie je de on{{ collection.done_term }} items die nog ontbreken in de verzameling.
     <a href="#" onClick="[].forEach.call(document.getElementsByClassName('item-row'), (el) => el.classList.remove('w3-hide'));document.getElementById('show-all-paragraph').remove();document.getElementById('show-only-missing').classList.remove('w3-hide');">Toon alles</a>.
 </p>
 <p id='show-only-missing' class="w3-hide">
