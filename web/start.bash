@@ -14,7 +14,7 @@ if [ ! -d "venv" ]; then
   python3.8 -m venv venv
 fi
 source venv/bin/activate
-pip3 install pip==24.3.1 pip-tools==7.4.1
+pip3 install pip==25.0 pip-tools==7.4.1
 pip-sync setup/requirements.txt
 
 gunicorn app:app --reload -b localhost:8003
