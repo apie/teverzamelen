@@ -84,6 +84,7 @@ class Item(db.Model):
     read = db.Column(db.Boolean(), default=False)
     read_date = db.Column(db.Date())
     currently_reading = db.relationship("Reading", back_populates="item", uselist=False)
+    note = db.Column(db.Text())
 
 
 class Reading(db.Model):
