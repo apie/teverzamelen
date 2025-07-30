@@ -107,6 +107,18 @@ class APIKey(db.Model):
     user = db.relationship("User", backref=db.backref("apikeys", lazy="dynamic"))
 
 
+class Challenge(db.Model):
+    __tablename__ = "challenge"
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    user = db.relationship("User", backref=db.backref("challenges", lazy="dynamic"))
+    name = db.Column(db.String(255))
+    start_date = db.Column(db.Date())
+    end_date = db.Column(db.Date())
+    goal = db.Column(db.Integer)
+    completed_date = db.Column(db.Date())
+
+
 # Define models
 fsqla.FsModels.set_db_info(db)
 
