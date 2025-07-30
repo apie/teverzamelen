@@ -7,5 +7,5 @@ def get_stripinfo_collection_data(collection_url):
     data = p.get_data()
     return dict(
         name=name,
-        items=map(lambda x: ' '.join((x['countcol'], x['firstcol'])), data),
+        items=map(lambda x: " ".join((x["countcol"], x["firstcol"])), data),
     )

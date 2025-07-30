@@ -7,10 +7,10 @@ from bs4 import BeautifulSoup  # type: ignore
 import requests
 import sys
 
-BASE_URL = 'https://stripinfo.be/reeks/index/'
-FIELDS = ('countcol', 'firstcol')
+BASE_URL = "https://stripinfo.be/reeks/index/"
+FIELDS = ("countcol", "firstcol")
 SKIP = dict(
-    countcol=('INT', 'S'),  # skip integraal and special
+    countcol=("INT", "S"),  # skip integraal and special
 )
 
 
@@ -21,7 +21,7 @@ class Parser:
         self.tdata = []
         page = self.session.get(self.url, timeout=5)
         soup = BeautifulSoup(page.content, "html.parser")
-        self.title = soup.findAll("title")[0].text.split(' - stripinfo.be')[0]
+        self.title = soup.findAll("title")[0].text.split(" - stripinfo.be")[0]
 
         tables = soup.findAll("table", {"class": ["lijst"]})
         assert len(tables) == 1
@@ -35,8 +35,11 @@ class Parser:
                 if skiprow:
                     continue
                 for field in FIELDS:
-                    if cell.attrs['class'][0] == field:
-                        if any(cell.text.startswith(skiptext_for_field) for skiptext_for_field in SKIP.get(field, ())):
+                    if cell.attrs["class"][0] == field:
+                        if any(
+                            cell.text.startswith(skiptext_for_field)
+                            for skiptext_for_field in SKIP.get(field, ())
+                        ):
                             skiprow = True
                             continue
                         data[field] = cell.text.strip()
@@ -49,7 +52,8 @@ class Parser:
 
 if __name__ == "__main__":
     from tabulate import tabulate
-    url = sys.argv[1].replace('www.', '')
+
+    url = sys.argv[1].replace("www.", "")
     assert url.startswith(BASE_URL)
     p = Parser(url)
-    print(tabulate(p.get_data(), headers='keys', tablefmt='tsv'))
+    print(tabulate(p.get_data(), headers="keys", tablefmt="tsv"))

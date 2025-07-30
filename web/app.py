@@ -23,27 +23,31 @@ import config
 app = flask.Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.sqlite')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(
+    basedir, "app.sqlite"
+)
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-app.config['SECURITY_REGISTERABLE'] = True
-app.config['SECURITY_DEFAULT_REMEMBER_ME'] = True
-app.config['SECURITY_RECOVERABLE'] = True
-app.config['SECURITY_UNAUTHORIZED_VIEW'] = '/'
-app.config['SECURITY_SEND_PASSWORD_RESET_NOTICE_EMAIL'] = False
-app.config['SECURITY_EMAIL_SUBJECT_REGISTER'] = 'Account aangemaakt! Welkom bij Teverzamelen'
+app.config["SECURITY_REGISTERABLE"] = True
+app.config["SECURITY_DEFAULT_REMEMBER_ME"] = True
+app.config["SECURITY_RECOVERABLE"] = True
+app.config["SECURITY_UNAUTHORIZED_VIEW"] = "/"
+app.config["SECURITY_SEND_PASSWORD_RESET_NOTICE_EMAIL"] = False
+app.config["SECURITY_EMAIL_SUBJECT_REGISTER"] = (
+    "Account aangemaakt! Welkom bij Teverzamelen"
+)
 
-app.config['MAIL_SERVER'] = config.MAIL_SERVER
-app.config['MAIL_PORT'] = config.MAIL_PORT
-app.config['MAIL_USE_SSL'] = config.MAIL_USE_SSL
-app.config['MAIL_USERNAME'] = config.MAIL_USERNAME
-app.config['MAIL_DEFAULT_SENDER'] = config.MAIL_DEFAULT_SENDER
-app.config['MAIL_PASSWORD'] = config.MAIL_PASSWORD
+app.config["MAIL_SERVER"] = config.MAIL_SERVER
+app.config["MAIL_PORT"] = config.MAIL_PORT
+app.config["MAIL_USE_SSL"] = config.MAIL_USE_SSL
+app.config["MAIL_USERNAME"] = config.MAIL_USERNAME
+app.config["MAIL_DEFAULT_SENDER"] = config.MAIL_DEFAULT_SENDER
+app.config["MAIL_PASSWORD"] = config.MAIL_PASSWORD
 mail = Mail(app)
 # Generate a nice key using secrets.token_urlsafe()
-app.config['SECRET_KEY'] = config.SECRET_KEY
+app.config["SECRET_KEY"] = config.SECRET_KEY
 # Generate a good salt using: secrets.SystemRandom().getrandbits(128)
-app.config['SECURITY_PASSWORD_SALT'] = config.SECURITY_PASSWORD_SALT
+app.config["SECURITY_PASSWORD_SALT"] = config.SECURITY_PASSWORD_SALT
 
 # As of Flask-SQLAlchemy 2.4.0 it is easy to pass in options directly to the
 # underlying engine. This option makes sure that DB connections from the
@@ -55,26 +59,28 @@ app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
 
 db = flask_sqlalchemy.SQLAlchemy(app)
 
-app.config['DEBUG'] = config.DEBUG
+app.config["DEBUG"] = config.DEBUG
 
 
 class Collection(db.Model):
-    __tablename__ = 'collection'
+    __tablename__ = "collection"
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship("User", backref=db.backref('collections', lazy='dynamic'))
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    user = db.relationship("User", backref=db.backref("collections", lazy="dynamic"))
     name = db.Column(db.String(255))
     public = db.Column(db.Boolean(), default=False)
     url = db.Column(db.String(255))
     description = db.Column(db.Text())
-    done_term = db.Column(db.String(255), default='gelezen')
+    done_term = db.Column(db.String(255), default="gelezen")
 
 
 class Item(db.Model):
-    __tablename__ = 'item'
+    __tablename__ = "item"
     id = db.Column(db.Integer, primary_key=True)
-    collection_id = db.Column(db.Integer, db.ForeignKey('collection.id'))
-    collection = db.relationship("Collection", backref=db.backref('items', lazy='dynamic'))
+    collection_id = db.Column(db.Integer, db.ForeignKey("collection.id"))
+    collection = db.relationship(
+        "Collection", backref=db.backref("items", lazy="dynamic")
+    )
     sequence = db.Column(db.Integer)
     name = db.Column(db.String(255))
     owned = db.Column(db.Boolean(), default=False)
@@ -88,17 +94,17 @@ class Item(db.Model):
 
 
 class Reading(db.Model):
-    __tablename__ = 'reading'
+    __tablename__ = "reading"
     id = db.Column(db.Integer, primary_key=True)
-    item_id = db.Column(db.Integer, db.ForeignKey('item.id'))
+    item_id = db.Column(db.Integer, db.ForeignKey("item.id"))
     item = db.relationship("Item", back_populates="currently_reading")
 
 
 class APIKey(db.Model):
-    __tablename__ = 'apikey'
+    __tablename__ = "apikey"
     key = db.Column(db.String, primary_key=True, default=lambda: str(uuid.uuid4()))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship("User", backref=db.backref('apikeys', lazy='dynamic'))
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    user = db.relationship("User", backref=db.backref("apikeys", lazy="dynamic"))
 
 
 # Define models
@@ -119,17 +125,17 @@ with app.app_context():
 security = Security(app, user_datastore)
 
 
-@app.route('/favicon.ico')
+@app.route("/favicon.ico")
 def favicon():
-    return app.send_static_file('favicon.ico')
+    return app.send_static_file("favicon.ico")
 
 
-@app.route('/static/<path:path>')
+@app.route("/static/<path:path>")
 def send_static(path):
-    return send_from_directory('static', path)
+    return send_from_directory("static", path)
 
 
-@app.route('/')
+@app.route("/")
 def index():
     collections = to_read = ()
     busy_reading = 0
@@ -137,54 +143,90 @@ def index():
     recent_items = None
     if not current_user.is_anonymous:
         collections = Collection.query.filter_by(user=current_user)
-        to_read = Item.query.filter_by(owned=True, read=False).join(Item.collection).filter_by(user=current_user).count()
-        busy_reading = Item.query.join(Item.collection).filter_by(user=current_user).join(Item.currently_reading).count()
+        to_read = (
+            Item.query.filter_by(owned=True, read=False)
+            .join(Item.collection)
+            .filter_by(user=current_user)
+            .count()
+        )
+        busy_reading = (
+            Item.query.join(Item.collection)
+            .filter_by(user=current_user)
+            .join(Item.currently_reading)
+            .count()
+        )
         stats = dict(
             all=get_stats(),
         )
-        if tijdschriften := Collection.query.filter_by(user=current_user, name='Tijdschriften').first():
-            stats['ex_tijdschriften'] = get_stats(exclude=tijdschriften.name)
+        if tijdschriften := Collection.query.filter_by(
+            user=current_user, name="Tijdschriften"
+        ).first():
+            stats["ex_tijdschriften"] = get_stats(exclude=tijdschriften.name)
         recent_items = get_recent_items(current_user)
-    return render_template('index.html', title='', collections=collections, to_read=to_read, busy_reading=busy_reading, stats=stats, recent_items=recent_items)
+    return render_template(
+        "index.html",
+        title="",
+        collections=collections,
+        to_read=to_read,
+        busy_reading=busy_reading,
+        stats=stats,
+        recent_items=recent_items,
+    )
 
 
-@app.route('/public')
+@app.route("/public")
 def public():
     users = User.query.join(User.collections).filter_by(public=True)
-    return render_template('public/public_index.html', title='Gedeelde lijstjes', users=users)
+    return render_template(
+        "public/public_index.html", title="Gedeelde lijstjes", users=users
+    )
 
 
-@app.route('/public/user/<id_or_email>')
+@app.route("/public/user/<id_or_email>")
 def public_user(id_or_email):
-    user = User.query.filter_by(id=id_or_email).first() or User.query.filter_by(email=id_or_email).first()
+    user = (
+        User.query.filter_by(id=id_or_email).first()
+        or User.query.filter_by(email=id_or_email).first()
+    )
     if not user:
-        return 'Unknown user', 404
+        return "Unknown user", 404
     collections = Collection.query.filter_by(public=True, user=user)
     if not collections.first():
         # Do not leak information about users if they dont share anything
-        return 'Unknown user', 404
-    if 'all' in request.args:
-        all_items = Item.query.filter_by(owned=False, read=False).join(Item.collection).filter_by(user=user, public=True)
+        return "Unknown user", 404
+    if "all" in request.args:
+        all_items = (
+            Item.query.filter_by(owned=False, read=False)
+            .join(Item.collection)
+            .filter_by(user=user, public=True)
+        )
         return render_template(
-            'public/public_collection_all.html',
+            "public/public_collection_all.html",
             title=f"Gedeelde items van {user.email.split('@')[0]}",
             all_items=all_items,
         )
     return render_template(
-        'public/public_collection.html',
+        "public/public_collection.html",
         title=f"Gedeelde lijstjes van {user.email.split('@')[0]}",
         collections=collections,
     )
 
 
-@app.route('/public/collection/<id>')
+@app.route("/public/collection/<id>")
 def view_public_collection(id):
     collection = Collection.query.filter_by(public=True, id=id).first_or_404()
     return render_template(
-        'public/view_public_collection.html',
+        "public/view_public_collection.html",
         title=f'Bekijk gedeeld lijstje "{collection.name}" van {collection.user.email.split("@")[0]}',
         collection=collection,
-        in_my_collection=False if current_user.is_anonymous else Collection.query.filter_by(user=current_user, name=collection.name).count() > 0,
+        in_my_collection=(
+            False
+            if current_user.is_anonymous
+            else Collection.query.filter_by(
+                user=current_user, name=collection.name
+            ).count()
+            > 0
+        ),
     )
 
 
@@ -192,54 +234,51 @@ def delete_collection(collection):
     Item.query.filter_by(collection=collection).delete()
     Collection.query.filter_by(id=collection.id).delete()
     db.session.commit()
-    response = Response('')
-    response.headers["HX-Redirect"] = '/'
+    response = Response("")
+    response.headers["HX-Redirect"] = "/"
     return response
 
 
 def patch_collection(collection):
-    field = request.environ['HTTP_HX_TRIGGER_NAME']
+    field = request.environ["HTTP_HX_TRIGGER_NAME"]
     val = getattr(collection, field)
     if isinstance(val, bool):
         newval = not val
-        retval = 'Ja' if newval else 'Nee'
+        retval = "Ja" if newval else "Nee"
     else:
-        raise Exception('Not implemented')
+        raise Exception("Not implemented")
     Collection.query.filter_by(id=collection.id).update({field: newval})
     db.session.commit()
-    if field == 'public':
-        return render_template('partials/is_public.html', collection=collection)
+    if field == "public":
+        return render_template("partials/is_public.html", collection=collection)
     return retval
 
 
 def get_stats(collection=None, exclude=None):
-    '''Get stats for a collection or all the collections of a user.'''
+    """Get stats for a collection or all the collections of a user."""
     if collection:
         items = Item.query.filter_by(collection=collection)
     else:
         items = Item.query.join(Item.collection).filter_by(user=current_user)
     if exclude:
         items = items.filter(Collection.name != exclude)
-    stats = dict(
-        read=dict(),
-        owned=dict()
-    )
+    stats = dict(read=dict(), owned=dict())
     today = datetime.date.today()
     last_month = today - relativedelta.relativedelta(months=1)
-    for t in ('read', 'owned'):
-        stats[t]['this_month'] = items.filter(
-            extract('month', getattr(Item, f'{t}_date')) == today.month,
-            extract('year', getattr(Item, f'{t}_date')) == today.year,
+    for t in ("read", "owned"):
+        stats[t]["this_month"] = items.filter(
+            extract("month", getattr(Item, f"{t}_date")) == today.month,
+            extract("year", getattr(Item, f"{t}_date")) == today.year,
         ).count()
-        stats[t]['this_year'] = items.filter(
-            extract('year', getattr(Item, f'{t}_date')) == today.year,
+        stats[t]["this_year"] = items.filter(
+            extract("year", getattr(Item, f"{t}_date")) == today.year,
         ).count()
-        stats[t]['last_month'] = items.filter(
-            extract('month', getattr(Item, f'{t}_date')) == last_month.month,
-            extract('year', getattr(Item, f'{t}_date')) == last_month.year,
+        stats[t]["last_month"] = items.filter(
+            extract("month", getattr(Item, f"{t}_date")) == last_month.month,
+            extract("year", getattr(Item, f"{t}_date")) == last_month.year,
         ).count()
-        stats[t]['last_year'] = items.filter(
-            extract('year', getattr(Item, f'{t}_date')) == today.year - 1,
+        stats[t]["last_year"] = items.filter(
+            extract("year", getattr(Item, f"{t}_date")) == today.year - 1,
         ).count()
     return stats
 
@@ -248,33 +287,46 @@ def get_recent_items(user):
     today = datetime.date.today()
     last_month = today - relativedelta.relativedelta(months=1)
     recent_items = []
-    items = Item.query.filter_by(owned=True).filter(Item.owned_date >= last_month).order_by(Item.owned_date.desc()).join(Item.collection).filter_by(user=user)[:5]
-    recent_items += [
-        f"{i.owned_date}: {i.name} gekocht"
-        for i in items
-    ]
-    items = Item.query.filter_by(read=True).filter(Item.read_date >= last_month).order_by(Item.read_date.desc()).join(Item.collection).filter_by(user=user)[:5]
-    recent_items += [
-        f"{i.read_date}: {i.name} {i.collection.done_term}"
-        for i in items
-    ]
+    items = (
+        Item.query.filter_by(owned=True)
+        .filter(Item.owned_date >= last_month)
+        .order_by(Item.owned_date.desc())
+        .join(Item.collection)
+        .filter_by(user=user)[:5]
+    )
+    recent_items += [f"{i.owned_date}: {i.name} gekocht" for i in items]
+    items = (
+        Item.query.filter_by(read=True)
+        .filter(Item.read_date >= last_month)
+        .order_by(Item.read_date.desc())
+        .join(Item.collection)
+        .filter_by(user=user)[:5]
+    )
+    recent_items += [f"{i.read_date}: {i.name} {i.collection.done_term}" for i in items]
     return sorted(recent_items, reverse=True)
 
 
-@app.route('/collection/<id>', methods=['GET', 'DELETE', 'PATCH'])
+@app.route("/collection/<id>", methods=["GET", "DELETE", "PATCH"])
 @auth_required()
 def view_collection(id):
     collection = Collection.query.filter_by(user=current_user, id=id).first_or_404()
-    if request.method == 'DELETE':
+    if request.method == "DELETE":
         return delete_collection(collection)
-    elif request.method == 'PATCH':
+    elif request.method == "PATCH":
         return patch_collection(collection)
     stats = dict(all=get_stats(collection))
-    return render_template('view_collection.html', title=f'Bewerk lijstje "{collection.name}"', collection=collection, stats=stats)
+    return render_template(
+        "view_collection.html",
+        title=f'Bewerk lijstje "{collection.name}"',
+        collection=collection,
+        stats=stats,
+    )
 
 
 def create_stripinfo_collection(name, items, url):
-    new_collection = Collection(name=name, user=current_user, url=url, description='Geïmporteerd van stripinfo.')
+    new_collection = Collection(
+        name=name, user=current_user, url=url, description="Geïmporteerd van stripinfo."
+    )
     db.session.add(new_collection)
     db.session.commit()
     for item in items:
@@ -287,116 +339,135 @@ def collection_exists(name):
     return Collection.query.filter_by(user=current_user, name=name).first()
 
 
-STRIPINFO_URL = 'https://stripinfo.be/reeks/index/'
+STRIPINFO_URL = "https://stripinfo.be/reeks/index/"
 
 
-@app.route('/collection/new', methods=['POST'])
+@app.route("/collection/new", methods=["POST"])
 @auth_required()
 def new_collection():
-    name = request.form['name']
-    if name.replace('www.', '').startswith(STRIPINFO_URL):
+    name = request.form["name"]
+    if name.replace("www.", "").startswith(STRIPINFO_URL):
         data = get_stripinfo_collection_data(name)
 
-        if c := collection_exists(data['name']):
-            return redirect(f'/collection/{c.id}')
-        new_collection = create_stripinfo_collection(data['name'], data['items'], name)
+        if c := collection_exists(data["name"]):
+            return redirect(f"/collection/{c.id}")
+        new_collection = create_stripinfo_collection(data["name"], data["items"], name)
     else:
         if c := collection_exists(name):
-            return redirect(f'/collection/{c.id}')
+            return redirect(f"/collection/{c.id}")
         new_collection = Collection(name=name, user=current_user)
         db.session.add(new_collection)
         db.session.commit()
-    return redirect(f'/collection/{new_collection.id}')
+    return redirect(f"/collection/{new_collection.id}")
 
 
-@app.route('/copy_collection/<id>', methods=['POST'])
+@app.route("/copy_collection/<id>", methods=["POST"])
 @auth_required()
 def copy_collection(id):
     # Copy the collection and all the items in it.
     # Only copy names. Not owned/read attributes.
     collection = Collection.query.filter_by(public=True, id=id).first_or_404()
-    new_collection = collection_exists(collection.name) or Collection(name=collection.name, user=current_user)
+    new_collection = collection_exists(collection.name) or Collection(
+        name=collection.name, user=current_user
+    )
     db.session.add(new_collection)
     db.session.commit()
-    current_item_names = {item.name for item in Item.query.filter_by(collection=new_collection)}
+    current_item_names = {
+        item.name for item in Item.query.filter_by(collection=new_collection)
+    }
     for i, item in enumerate(collection.items.all()):
         if item.name not in current_item_names:
             db.session.add(Item(name=item.name, collection=new_collection))
     db.session.commit()
-    response = Response('')
-    response.headers["HX-Redirect"] = f'/collection/{new_collection.id}'
+    response = Response("")
+    response.headers["HX-Redirect"] = f"/collection/{new_collection.id}"
     return response
 
 
-@app.route('/item/new', methods=['POST'])
+@app.route("/item/new", methods=["POST"])
 @auth_required()
 def new_item():
-    collection_id = request.form['collection_id']
-    name = request.form['name']
+    collection_id = request.form["collection_id"]
+    name = request.form["name"]
     collection = Collection.query.filter_by(user=current_user, id=collection_id).first()
     if Item.query.filter_by(name=name, collection=collection).first():
-        return ''
+        return ""
     item = Item(name=name, collection=collection)
     db.session.add(item)
     db.session.commit()
-    return render_template('partials/item_tr.html', item=item)
+    return render_template("partials/item_tr.html", item=item)
 
 
-@app.route('/item/<id>/reading', methods=['POST'])
+@app.route("/item/<id>/reading", methods=["POST"])
 @auth_required()
 def mark_item_currently_reading(id):
     item = Item.query.filter_by(id=id).first()
     if item.collection.user != current_user:
-        return 'Unauthorized', 401
+        return "Unauthorized", 401
     reading = Reading(item=item)
     db.session.add(reading)
     db.session.commit()
-    return render_template('partials/reading_list_item_tr.html', item=item)
+    return render_template("partials/reading_list_item_tr.html", item=item)
 
 
-@app.route('/item/<id>', methods=['PATCH', 'DELETE'])
+@app.route("/item/<id>", methods=["PATCH", "DELETE"])
 @auth_required()
 def change_item(id):
     item = Item.query.filter_by(id=id).first()
     if item.collection.user != current_user:
-        return 'Unauthorized', 401
-    if request.method == 'DELETE':
+        return "Unauthorized", 401
+    if request.method == "DELETE":
         db.session.delete(item)
         db.session.commit()
-        return ''
-    if request.method == 'PATCH':
-        field = request.environ['HTTP_HX_TRIGGER_NAME']
+        return ""
+    if request.method == "PATCH":
+        field = request.environ["HTTP_HX_TRIGGER_NAME"]
         val = getattr(item, field)
         if isinstance(val, bool):
             newval = not val
-            if hasattr(item, field + '_date'):
-                Item.query.filter_by(id=id).update({field + '_date': datetime.date.today() if newval else datetime.date.min})
+            if hasattr(item, field + "_date"):
+                Item.query.filter_by(id=id).update(
+                    {
+                        field
+                        + "_date": (
+                            datetime.date.today() if newval else datetime.date.min
+                        )
+                    }
+                )
         else:
-            raise Exception('Not implemented')
+            raise Exception("Not implemented")
         Item.query.filter_by(id=id).update({field: newval})
         db.session.commit()
-        if request.environ['HTTP_REFERER'].endswith('reading_list'):
+        if request.environ["HTTP_REFERER"].endswith("reading_list"):
             # Marked as read. Remove from 'currently reading'.
             Reading.query.filter_by(item_id=id).delete()
             db.session.commit()
-            return ''  # Item marked as read. Do not return anything since row disappears from the page.
-        return render_template('partials/item_tr.html', item=item)
+            return ""  # Item marked as read. Do not return anything since row disappears from the page.
+        return render_template("partials/item_tr.html", item=item)
 
 
 def reading_list_sorter(t):
     # Put Items that you are currently reading at the top of the list
     if t.currently_reading:
-        prefix = ''
+        prefix = ""
     else:
-        prefix = 'z'
+        prefix = "z"
     return prefix + t.collection.name
 
 
-@app.route('/reading_list')
+@app.route("/reading_list")
 @auth_required()
 def reading_list():
-    to_read = Item.query.filter_by(owned=True, read=False).join(Item.collection).filter_by(user=current_user)
-    return render_template('reading_list.html', title='Leeslijst', to_read=sorted(to_read, key=reading_list_sorter))
+    to_read = (
+        Item.query.filter_by(owned=True, read=False)
+        .join(Item.collection)
+        .filter_by(user=current_user)
+    )
+    return render_template(
+        "reading_list.html",
+        title="Leeslijst",
+        to_read=sorted(to_read, key=reading_list_sorter),
+    )
 
 
 import api  # noqa
@@ -422,5 +493,5 @@ def sortable_str(string):
 # ###
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run()
