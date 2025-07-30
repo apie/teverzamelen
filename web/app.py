@@ -3,6 +3,8 @@ import os
 import re
 import uuid
 
+from typing import Optional, Dict, List
+
 import flask
 import flask_sqlalchemy
 import datetime
@@ -153,6 +155,7 @@ def index():
     busy_reading = 0
     stats = dict()
     recent_items = None
+    open_challenges = []
     if not current_user.is_anonymous:
         collections = Collection.query.filter_by(user=current_user)
         to_read = (
@@ -170,6 +173,7 @@ def index():
         stats = dict(
             all=get_stats(),
         )
+        open_challenges = get_open_challenges(current_user)
         if tijdschriften := Collection.query.filter_by(
             user=current_user, name="Tijdschriften"
         ).first():
@@ -183,6 +187,7 @@ def index():
         busy_reading=busy_reading,
         stats=stats,
         recent_items=recent_items,
+        open_challenges=open_challenges,
     )
 
 
@@ -266,7 +271,38 @@ def patch_collection(collection):
     return retval
 
 
-def get_stats(collection=None, exclude=None):
+def get_open_challenges(user: User) -> List[Dict]:
+    def get_days_left(end_date: datetime.date) -> int:
+        """Calculate days from today until end_date."""
+        return (end_date - datetime.date.today()).days
+
+    def get_items_done(start_date: datetime.date) -> int:
+        """Find items read since start date."""
+        return (
+            Item.query.join(Item.collection)
+            .filter_by(user=current_user)
+            .filter(Item.read_date >= start_date)
+        ).count()
+
+    return [
+        dict(
+            id=challenge.id,
+            name=challenge.name,
+            start_date=challenge.start_date,
+            end_date=challenge.start_date,
+            goal=challenge.goal,
+            days_left=get_days_left(challenge.end_date),
+            items_done=get_items_done(challenge.start_date),
+        )
+        for challenge in Challenge.query.filter_by(user=user).filter(
+            Challenge.completed_date.is_(None)
+        )
+    ]
+
+
+def get_stats(
+    collection: Optional[Collection] = None, exclude: Optional[str] = None
+) -> Dict:
     """Get stats for a collection or all the collections of a user."""
     if collection:
         items = Item.query.filter_by(collection=collection)
@@ -440,8 +476,7 @@ def change_item(id):
             if hasattr(item, field + "_date"):
                 Item.query.filter_by(id=id).update(
                     {
-                        field
-                        + "_date": (
+                        field + "_date": (
                             datetime.date.today() if newval else datetime.date.min
                         )
                     }

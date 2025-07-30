@@ -23,6 +23,24 @@
                 </ul>
             </div>
         {% endif %}
+        <h2>Uitdagingen</h2>
+            <div class="w3-container">
+            {% if open_challenges %}
+                <ul>
+                    {% for challenge in open_challenges %}
+                        <li>
+                            <label for="challenge_{{ challenge.id }}"><strong>{{ challenge.name }}</strong>:
+                                {{ challenge.items_done }}/{{ challenge.goal}} (nog {{ challenge.days_left }} dagen)
+                            </label>
+                            <br>
+                            <progress id="challenge_{{ challenge.id }}" value="{{ challenge.items_done }}" max="{{ challenge.goal }}"></progress>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                Geen openstaande uitdagingen.
+            {% endif %}
+        </div>
         <h2>Jouw lijstjes
             <button class="w3-round w3-button w3-hover-yellow w3-small" title="Toon formulier voor nieuw item" onClick="document.getElementById('newItemForm').classList.toggle('w3-hide');">
                 <i class="fa fa-plus"></i>
