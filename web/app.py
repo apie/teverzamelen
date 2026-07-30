@@ -31,6 +31,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 app.config["SECURITY_REGISTERABLE"] = True
+app.config["SECURITY_CONFIRMABLE"] = True
 app.config["SECURITY_DEFAULT_REMEMBER_ME"] = True
 app.config["SECURITY_RECOVERABLE"] = True
 app.config["SECURITY_UNAUTHORIZED_VIEW"] = "/"
