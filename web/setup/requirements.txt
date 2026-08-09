@@ -18,7 +18,7 @@ blinker==1.7.0
     #   flask-principal
 bs4==0.0.2
     # via -r requirements.in
-certifi==2024.2.2
+certifi==2024.7.4
     # via requests
 charset-normalizer==3.3.2
     # via requests
