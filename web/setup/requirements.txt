@@ -4,7 +4,7 @@
 #
 #    pip-compile
 #
-bcrypt==4.1.2
+bcrypt==4.2.1
     # via
     #   -r requirements.in
     #   flask-security-too
