@@ -94,7 +94,7 @@ urllib3==2.2.1
     # via requests
 webencodings==0.5.1
     # via bleach
-werkzeug==3.0.1
+werkzeug==3.0.6
     # via
     #   flask
     #   flask-login
