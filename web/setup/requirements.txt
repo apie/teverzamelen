@@ -90,7 +90,7 @@ sqlalchemy==2.0.28
     # via flask-sqlalchemy
 typing-extensions==4.10.0
     # via sqlalchemy
-urllib3==2.2.1
+urllib3==2.2.2
     # via requests
 webencodings==0.5.1
     # via bleach
