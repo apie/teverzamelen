@@ -3,6 +3,7 @@ troep/
 __pycache__/
 *.sqlite
 venv/
+.venv/
 backup/
 config.py
 *.db

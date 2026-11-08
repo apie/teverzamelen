@@ -1,0 +1,19 @@
+[project]
+name = "verzameling"
+version = "0.1.0"
+description = "Create lists for your collections."
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "bcrypt",
+    "beautifulsoup4",
+    "flask-security-too[common]",
+    "flask-mailman",
+    "flask-sqlalchemy",
+    "gunicorn",
+    "python-dateutil",
+    "requests",
+]
+
+[tool.uv]
+package = false

@@ -1,4 +1,16 @@
 #!/usr/bin/env python3
+# /// script
+# requires-python = ">=3.14"
+# dependencies = [
+#     "bcrypt",
+#     "beautifulsoup4",
+#     "flask-security-too[common]",
+#     "flask-mailman",
+#     "flask-sqlalchemy",
+#     "python-dateutil",
+#     "requests",
+# ]
+# ///
 # Add admin user and default collections
 # First run the import script you like and save the output in the output dir as tsv file. Then run this script. You can run this script multiple times.
 from sys import argv

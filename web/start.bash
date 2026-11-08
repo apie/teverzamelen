@@ -9,13 +9,7 @@ if [ ! -f 'config.py' ]; then
   echo 'Please edit the config file: config.py'
   exit 1
 fi
-if [ ! -d "venv" ]; then
-  #virtualenv --python=python3.12 venv
-  python3.8 -m venv venv
-fi
-source venv/bin/activate
-pip3 install pip==25.0 pip-tools==7.4.1
-pip-sync setup/requirements.txt
+~/.local/bin/uv sync --no-dev
 
-gunicorn app:app --reload -b localhost:8003
+~/.local/bin/uv run --no-dev gunicorn app:app -b localhost:${PORT:-8003}
 

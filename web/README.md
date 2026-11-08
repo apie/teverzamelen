@@ -1,8 +1,17 @@
 # Verzameling
 Create lists for your collections. 
  
+## Requirements
+- Python 3.14
+- [uv](https://docs.astral.sh/uv/) (installed at `~/.local/bin/uv`)
+
+Dependencies are defined in `pyproject.toml`.
+
 ## Getting started
-Run `start.bash`
+Run `start.bash`. It creates the `.venv` (using `uv sync`) with Python 3.14,
+installs the dependencies and starts Gunicorn.
+
+To add a dependency: `uv add <package>`.
 
 ## Deploy using a git hook
 Check https://www.denick.org/post/08deploy/

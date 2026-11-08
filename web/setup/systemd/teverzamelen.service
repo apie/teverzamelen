@@ -9,7 +9,7 @@ Group=telegram
 Environment=PYTHONUNBUFFERED=1
 WorkingDirectory=/home/telegram/teverzamelen/web/
 ExecStart=/home/telegram/teverzamelen/web/start.bash
-ExecReload=/usr/bin/pkill -HUP -f 'teverzamelen/web/venv/bin/gunicorn'
+ExecReload=/usr/bin/pkill -HUP -f 'teverzamelen/web/.venv/bin/gunicorn'
 Restart=always
 
 
