@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+# /// script
+# requires-python = ">=3.14"
+# dependencies = [
+#     "beautifulsoup4",
+#     "requests",
+#     "tabulate",
+# ]
+# ///
 # Scrape stripinfo reeks page
 # By Apie 2021-10-17
 # License: MIT

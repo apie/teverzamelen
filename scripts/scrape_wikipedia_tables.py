@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+# /// script
+# requires-python = ">=3.14"
+# dependencies = [
+#     "beautifulsoup4",
+#     "requests",
+# ]
+# ///
 """
 Scrape a table from wikipedia using python. Allows for cells spanning multiple rows and/or columns. Outputs csv files for
 each table

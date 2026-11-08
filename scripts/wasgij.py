@@ -1,4 +1,13 @@
 #!/usr/bin/env python3
+# /// script
+# requires-python = ">=3.14"
+# dependencies = [
+#     "beautifulsoup4",
+#     "requests",
+#     "requests-cache",
+#     "tabulate",
+# ]
+# ///
 # Scrape WASGIJ product page
 # By Apie 2020-10-02
 # License: MIT

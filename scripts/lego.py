@@ -1,4 +1,10 @@
 #!/usr/bin/env python3
+# /// script
+# requires-python = ">=3.14"
+# dependencies = [
+#     "tabulate",
+# ]
+# ///
 # By Apie 2023-09-09
 # License: MIT
 # Read a csv downloaded from rebrickable.com containing all the lego sets, filter it on theme and print the result in table format

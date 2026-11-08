@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+# /// script
+# requires-python = ">=3.14"
+# dependencies = [
+#     "lxml",
+#     "requests",
+#     "tabulate",
+# ]
+# ///
 # By Apie 2022-09-21
 # License: MIT
 import re

@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+# /// script
+# requires-python = ">=3.14"
+# dependencies = [
+#     "lxml-html-clean",
+#     "requests-html",
+#     "tabulate",
+# ]
+# ///
 # Scrape lastdodo area page
 # By Apie 2024-10-13
 # License: MIT
